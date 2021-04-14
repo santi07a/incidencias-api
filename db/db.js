@@ -1,9 +1,10 @@
+require("dotenv").config();
 const chalk = require("chalk");
 const mongoose = require("mongoose");
-require("dotenv").config();
+
 const debug = require("debug")("proyectos:mongoDB");
 
-mongoose.connect("mongodb://localhost/incidencias", {
+mongoose.connect("mongodb://localhost/Incidencias", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false

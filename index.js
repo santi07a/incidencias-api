@@ -1,5 +1,5 @@
 require("dotenv").config();
-const debug = require("debug")("alumnos:root");
+const debug = require("debug")("incidencias:root");
 const cors = require("cors");
 const morgan = require("morgan");
 const chalk = require("chalk");
