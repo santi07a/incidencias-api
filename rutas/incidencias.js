@@ -4,6 +4,7 @@ const { checkSchema } = require("express-validator");
 const { getIncidencias, postIncidencia } = require("../controladores/incidencias");
 const { getIncidenciaSchema } = require("../schemas/incidenciaSchema");
 const { badRequestError } = require("../errores/errores");
+const md5 = require("md5");
 
 const router = express.Router();
 
