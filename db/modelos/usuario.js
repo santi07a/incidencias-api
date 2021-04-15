@@ -1,13 +1,13 @@
 const { Schema, model } = require("mongoose");
 
-const IncidenciaSchema = new Schema({
+const UsuarioSchema = new Schema({
   index: {
     type: Number,
     required: true
   },
   usuarioCreador: {
-    type: Schema.Types.ObjectId,
-    ref: "Usuario"
+    type: String,
+    required: true
   },
   fotoIncidencia: {
     type: String,
@@ -43,6 +43,6 @@ const IncidenciaSchema = new Schema({
   }
 });
 
-const Incidencia = model("Incidencia", IncidenciaSchema, "incidencias");
+const Usuario = model("Usuario", UsuarioSchema, "incidencias");
 
-module.exports = Incidencia;
+module.exports = Usuario;
