@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const chalk = require("chalk");
 const express = require("express");
 const options = require("./parametrosCLI");
+const rutasIncidencias = require("./rutas/incidencias");
 
 const {
   serverError, notFoundError, generalError
@@ -24,6 +25,7 @@ server.on("error", err => serverError(err, puerto));
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
+app.use("/incidencias", rutasIncidencias);
 app.get("/", (req, res, next) => {
   res.redirect("/incidencias");
 });
