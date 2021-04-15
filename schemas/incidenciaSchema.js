@@ -38,6 +38,16 @@ const getIncidenciaSchema = () => {
   const registrada = {
     exists: {
       errorMessage: "Falta la fecha de registro de la incidencia"
+    },
+    isInt: {
+      errorMessage: "La fecha de registro tiene que ser un timestamp"
+    },
+    isLength: {
+      errorMessage: "La fecha de registro tiene que ser un timestamp",
+      options: {
+        min: 13,
+        max: 13
+      }
     }
   };
   const latitud = {
@@ -50,6 +60,13 @@ const getIncidenciaSchema = () => {
         } else {
           return false;
         }
+      }
+    },
+    isFloat: {
+      errorMessage: "La latitud tiene que ser un float entre -90 y 90",
+      options: {
+        min: -90,
+        max: 90
       }
     }
   };
@@ -64,6 +81,13 @@ const getIncidenciaSchema = () => {
           return false;
         }
       }
+    },
+    isFloat: {
+      errorMessage: "La longitud tiene que ser un float entre -180 y 180",
+      options: {
+        min: -180,
+        max: 180
+      }
     }
   };
   const tipoIncidencia = {
@@ -74,6 +98,9 @@ const getIncidenciaSchema = () => {
   const resuelta = {
     exists: {
       errorMessage: "Falta el estado de la incidencia"
+    },
+    isBoolean: {
+      errorMessage: "El estado de resolución tiene que ser booleano"
     }
   };
   return {
