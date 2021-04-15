@@ -17,6 +17,10 @@ const UsuarioSchema = new Schema({
     type: String,
     required: true
   },
+  contraseña: {
+    type: String,
+    required: true
+  },
   telefono: String,
   direccion: String,
   fechaAlta: {
@@ -27,7 +31,7 @@ const UsuarioSchema = new Schema({
     type: [String],
     required: true
   }
-})
+});
 
 const Usuario = model("Usuario", UsuarioSchema, "incidencias");
 
