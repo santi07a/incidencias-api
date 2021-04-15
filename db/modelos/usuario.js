@@ -5,43 +5,29 @@ const UsuarioSchema = new Schema({
     type: Number,
     required: true
   },
-  usuarioCreador: {
+  nombre: {
     type: String,
     required: true
   },
-  fotoIncidencia: {
+  apellidos: {
     type: String,
     required: true
   },
-  descripcion: {
+  email: {
     type: String,
     required: true
   },
-  direccion: {
+  telefono: String,
+  direccion: String,
+  fechaAlta: {
     type: String,
     required: true
   },
-  registrada: {
-    type: String,
-    required: true
-  },
-  latitud: {
-    type: Number,
-    required: true
-  },
-  longitud: {
-    type: Number,
-    required: true
-  },
-  tipoIncidencia: {
-    type: String,
-    required: true
-  },
-  resuelta: {
-    type: Boolean,
+  incidenciasSeguidas: {
+    type: [String],
     required: true
   }
-});
+})
 
 const Usuario = model("Usuario", UsuarioSchema, "incidencias");
 
