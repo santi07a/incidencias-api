@@ -33,6 +33,6 @@ const UsuarioSchema = new Schema({
   }
 });
 
-const Usuario = model("Usuario", UsuarioSchema, "incidencias");
+const Usuario = model("Usuario", UsuarioSchema, "usuarios");
 
 module.exports = Usuario;

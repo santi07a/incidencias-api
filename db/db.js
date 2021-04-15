@@ -3,7 +3,7 @@ const chalk = require("chalk");
 const mongoose = require("mongoose");
 const debug = require("debug")("incidencias:mongoDB");
 
-mongoose.connect("mongodb+srv://somDev:bmnsbmns@cluster0.ekssc.mongodb.net", {
+mongoose.connect("mongodb+srv://somDev:bmnsbmns@cluster0.ekssc.mongodb.net/proyecto-final", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false

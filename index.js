@@ -7,6 +7,8 @@ const express = require("express");
 
 const options = require("./parametrosCLI");
 const rutasIncidencias = require("./rutas/incidencias");
+const rutasUsuarios = require("./rutas/usuarios");
+
 const {
   serverError, notFoundError, manejaErrores
 } = require("./errores/errores");
@@ -26,6 +28,7 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use("/incidencias", rutasIncidencias);
+app.use("/usuarios", rutasUsuarios);
 app.get("/", (req, res, next) => {
   res.redirect("/incidencias");
 });
