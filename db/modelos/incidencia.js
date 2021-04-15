@@ -1,8 +1,8 @@
 const { Schema, model } = require("mongoose");
 
 const IncidenciaSchema = new Schema({
-  index: {
-    type: Number,
+  nombre: {
+    type: String,
     required: true
   },
   usuarioCreador: {
@@ -17,21 +17,13 @@ const IncidenciaSchema = new Schema({
     type: String,
     required: true
   },
-  direccion: {
-    type: String,
-  },
+  direccion: String,
   registrada: {
     type: String,
     required: true
   },
-  latitud: {
-    type: Number,
-    required: true
-  },
-  longitud: {
-    type: Number,
-    required: true
-  },
+  latitud: Number,
+  longitud: Number,
   tipoIncidencia: {
     type: String,
     required: true

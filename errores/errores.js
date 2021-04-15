@@ -20,7 +20,17 @@ const notFoundError = (req, res, next) => {
   next(error);
 };
 
-const generalError = (err, req, res, next) => {
+const badRequestError = req => {
+  const errores = validationResult(req);
+  let error;
+  if (!errores.isEmpty()) {
+    error = generaError("El objeto introducido no tiene la forma correcta", 400);
+    console.log(errores.mapped());
+  }
+  return error;
+};
+
+const manejaErrores = (err, req, res, next) => {
   const error = {
     codigo: err.codigo || 500,
     mensaje: err.codigo ? err.message : "Ha ocurrido un error general"
@@ -28,37 +38,10 @@ const generalError = (err, req, res, next) => {
   res.status(error.codigo).json({ error: true, mensaje: error.mensaje });
 };
 
-const badRequestError = req => {
-  const errores = validationResult(req);
-  let error;
-  if (!errores.isEmpty()) {
-    const mapaErrores = errores.mapped();
-    if (mapaErrores.nota || mapaErrores.nombre || mapaErrores.apellidos) {
-      error = generaError("La incidencia no tiene la forma correcta", 400);
-      console.log(errores.mapped());
-    }
-  }
-  return error;
-};
-
-const idNoExisteError = req => {
-  const errores = validationResult(req);
-  let error;
-  if (!errores.isEmpty()) {
-    const mapaErrores = errores.mapped();
-    if (mapaErrores.id) {
-      error = generaError(mapaErrores.id.msg, 404);
-      console.log(mapaErrores);
-    }
-  }
-  return error;
-};
-
 module.exports = {
   generaError,
   serverError,
   notFoundError,
-  generalError,
-  badRequestError,
-  idNoExisteError
+  manejaErrores,
+  badRequestError
 };
