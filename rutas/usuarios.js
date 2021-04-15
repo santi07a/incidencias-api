@@ -6,7 +6,8 @@ const { getUsuarios, getUsuario } = require("../controladores/usuarios");
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
-  const { error, usuarios } = await getUsuarios(req.params.tipo, req.query);
+  const queryParams = req.query;
+  const { error, usuarios } = await getUsuarios(queryParams);
   if (error) {
     return next(error);
   } else {
@@ -23,4 +24,5 @@ router.get("/usuario/:idUsuario", async (req, res, next) => {
     res.json(usuario);
   }
 });
+
 module.exports = router;

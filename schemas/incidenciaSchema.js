@@ -1,7 +1,10 @@
 const getIncidenciaSchema = () => {
   const nombre = {
-    exists: {
-      errorMessage: "Falta el nombre de la incidencia"
+    isLength: {
+      errorMessage: "Falta el nombre de la incidencia",
+      options: {
+        min: 2
+      }
     }
   };
   const usuarioCreador = {
