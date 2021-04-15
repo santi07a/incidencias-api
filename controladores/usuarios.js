@@ -3,12 +3,16 @@ const { generaError } = require("../errores/errores");
 
 const getUsuarios = async () => {
   const respuesta = {
-    error: false,
+    error: null,
     usuarios: null
   };
   const usuarios = await Usuario.find();
-  respuesta.usuarios = usuarios;
-  return respuesta;
+  if (!usuarios) {
+    const error = generaError("No hay usuarios", 409);
+    respuesta.error = error;
+  } else {
+    respuesta.usuarios = usuarios;
+  } return respuesta;
 };
 
 module.exports = {
