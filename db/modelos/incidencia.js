@@ -19,7 +19,6 @@ const IncidenciaSchema = new Schema({
   },
   direccion: {
     type: String,
-    required: true
   },
   registrada: {
     type: String,

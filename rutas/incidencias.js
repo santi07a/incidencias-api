@@ -1,5 +1,6 @@
 const express = require("express");
 const debug = require("debug")("incidencias:incidencias");
+const md5 = require("md5");
 const { getIncidencias } = require("../controladores/incidencias");
 
 const router = express.Router();
