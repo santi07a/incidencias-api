@@ -1,4 +1,4 @@
-const debug = require("debug")("alumnos:errores");
+const debug = require("debug")("incidencias:errores");
 const chalk = require("chalk");
 const { validationResult } = require("express-validator");
 
