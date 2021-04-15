@@ -15,9 +15,8 @@ router.get("/", async (req, res, next) => {
 });
 
 router.get("/usuario/:idUsuario", async (req, res, next) => {
-  console.log(req);
-  const idUsuario = req.params.id;
-  const { usuario, error } = await getUsuario(idUsuario);
+  const id = req.params.idUsuario;
+  const { usuario, error } = await getUsuario(id);
   if (error) {
     next(error);
   } else {

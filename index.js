@@ -24,9 +24,9 @@ const server = app.listen(puerto, () => {
 
 server.on("error", err => serverError(err, puerto));
 
-app.use(cors());
-app.use(morgan("dev"));
 app.use(express.json());
+app.use(morgan("dev"));
+app.use(cors());
 app.use("/incidencias", rutasIncidencias);
 app.use("/usuarios", rutasUsuarios);
 app.get("/", (req, res, next) => {

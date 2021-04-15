@@ -24,7 +24,7 @@ const getUsuario = async id => {
     respuesta.usuario = usuario;
   } else {
     const error = generaError("El usuario solicitado no existe", 404);
-    respuesta.erorr = error;
+    respuesta.error = error;
   } return respuesta;
 };
 module.exports = {
