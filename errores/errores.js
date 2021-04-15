@@ -34,7 +34,7 @@ const badRequestError = req => {
   if (!errores.isEmpty()) {
     const mapaErrores = errores.mapped();
     if (mapaErrores.nota || mapaErrores.nombre || mapaErrores.apellidos) {
-      error = generaError("El alumno no tiene la forma correcta", 400);
+      error = generaError("La incidencia no tiene la forma correcta", 400);
       console.log(errores.mapped());
     }
   }

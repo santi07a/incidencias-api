@@ -3,7 +3,7 @@
     {
       "id": 1,
       "nombre": "Jose",
-      "apellido": "Bailon",
+      "apellidos": "Bailon Bailon",
       "email": "josebailon@gmail.com",
       "fecha": "1601534340000",
       "descripcion": "Arbol a punto de caerse",
@@ -15,7 +15,7 @@
     {
       "id": 2,
       "nombre": "Mario",
-      "apellido": "Cáceres",
+      "apellidos": "Cáceres",
       "email": "mariete@gmail.com",
       "fecha": "1609606704000",
       "descripcion": "Contenedor de basura con olor muy fuerte y nauseabundo",
@@ -27,7 +27,7 @@
     {
       "id": 3,
       "nombre": "Juana",
-      "apellido": "D'Arc",
+      "apellidos": "D'Arc",
       "email": "juanitalabuenita@hotmail.com",
       "fecha": "1614704304000",
       "descripcion": "Auto abandonado",
@@ -39,7 +39,7 @@
     {
       "id": 4,
       "nombre": "Elena",
-      "apellido": "Lerena",
+      "apellidos": "Lerena",
       "email": "elainlki@gmail.com",
       "fecha": "1616518704000",
       "descripcion": "banco de la plaza roto, los niños se pueden lastimar",
@@ -51,7 +51,7 @@
     {
       "id": 5,
       "nombre": "Elba",
-      "apellido": "Halcón",
+      "apellidos": "Halcón",
       "email": "elbalcon-aso@gmail.com",
       "fecha": "1617382704000",
       "descripcion": "bache gigante en una calle dónde los autos pasan rápido",
@@ -63,7 +63,7 @@
     {
       "id": 6,
       "nombre": "Javier",
-      "apellido": "Pastor",
+      "apellidos": "Pastor",
       "email": "javi3@gmail.com",
       "fecha": "1617271104000",
       "descripcion": "Alumbrado público no funciona",
@@ -75,7 +75,7 @@
     {
       "id": 6,
       "nombre": "Javier",
-      "apellido": "Pastor",
+      "apellidos": "Pastor",
       "email": "javi3@gmail.com",
       "fecha": "1617271104000",
       "descripcion": "empresa lactea deja todos los días mucha basura y muebles viejos",
@@ -87,7 +87,7 @@
     {
       "id": 7,
       "nombre": "Luis",
-      "apellido": "Linares",
+      "apellidos": "Linares",
       "email": "lichalinares@gmail.com",
       "fecha": "1615713823000",
       "descripcion": "zona insegura para caminar por falta de luces",
@@ -99,7 +99,7 @@
     {
       "id": 8,
       "nombre": "Luciana",
-      "apellido": "Giordano",
+      "apellidos": "Giordano",
       "email": "lucigior@gmail.com",
       "fecha": "1612358621000",
       "descripcion": "acera levantada",
@@ -111,7 +111,7 @@
     {
       "id": 9,
       "nombre": "Olivia",
-      "apellido": "Antonia",
+      "apellidos": "Antonia",
       "email": "oli.ia@gmail.com",
       "fecha": "1612352631000",
       "descripcion": "alguien tiró un mueble un día que no toca",
@@ -123,7 +123,7 @@
     {
       "id": 10,
       "nombre": "Roman",
-      "apellido": "Lagos",
+      "apellidos": "Lagos",
       "email": "romano32@yahoo.com",
       "fecha": "1614512601000",
       "descripcion": "parque canino en mal estado, sin limpieza",
