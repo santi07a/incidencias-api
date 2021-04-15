@@ -1,19 +1,15 @@
 const { Schema, model } = require("mongoose");
 
 const IncidenciaSchema = new Schema({
-  nombre: {
+  index: {
+    type: Number,
+    required: true
+  },
+  usuarioCreador: {
     type: String,
     required: true
   },
-  apellidos: {
-    type: String,
-    required: true
-  },
-  email: {
-    type: String,
-    required: true
-  },
-  fecha: {
+  fotoIncidencia: {
     type: String,
     required: true
   },
@@ -21,17 +17,29 @@ const IncidenciaSchema = new Schema({
     type: String,
     required: true
   },
-  foto: String,
+  direccion: {
+    type: String,
+    required: true
+  },
+  registrada: {
+    type: String,
+    required: true
+  },
+  latitud: {
+    type: Number,
+    required: true
+  },
+  longitud: {
+    type: Number,
+    required: true
+  },
   tipoIncidencia: {
     type: String,
     required: true
   },
-  localizacion: {
-    type: String,
-    required: true
-  },
   resuelta: {
-    type: Boolean
+    type: Boolean,
+    required: true
   }
 });
 
