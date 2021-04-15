@@ -2,7 +2,7 @@ const express = require("express");
 const debug = require("debug")("incidencias:incidencias");
 const { checkSchema } = require("express-validator");
 const md5 = require("md5");
-const { getIncidencias, postIncidencia } = require("../controladores/incidencias");
+const { getIncidencias, postIncidencia, putIncidencia } = require("../controladores/incidencias");
 const { getIncidenciaSchema } = require("../schemas/incidenciaSchema");
 const { badRequestError } = require("../errores/errores");
 
@@ -29,19 +29,19 @@ router.post("/",
       return res.status(201).json(respuesta.incidencia);
     }
   });
-/* router.post("/proyecto",
-  checkSchema(getProyectoSchema(true)),
+router.put("/:idIncidencia",
+  checkSchema(getIncidenciaSchema(true)),
   async (req, res, next) => {
     const error = badRequestError(req);
     if (error) {
       return next(error);
     }
-    const respuesta = await postProyecto(req.body);
+    const respuesta = await putIncidencia(req.body, req.params.idIncidencia);
     if (respuesta.error) {
       return next(respuesta.error);
     } else {
-      return res.status(201).json(respuesta.proyecto);
+      return res.status(201).json(respuesta.incidencia);
     }
-  }); */
+  });
 
 module.exports = router;

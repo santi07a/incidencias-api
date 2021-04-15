@@ -1,4 +1,26 @@
-const getIncidenciaSchema = () => {
+const getIncidenciaSchema = (requiereId) => {
+  let idIncidencia = {
+    optional: true,
+    isMongoId: {
+      errorMessage: "El id de la incidencia tiene que ser un ObjectId de Mongo"
+    }
+  };
+  if (requiereId) {
+    idIncidencia = {
+      custom: {
+        errorMessage: "El id de la incidencia tiene que pasarse a través del URL",
+        options: (value, { req }) => {
+          if (req.body.idIncidencia) {
+            return true;
+          }
+          return false;
+        }
+      },
+      isMongoId: {
+        errorMessage: "El id de la incidencia tiene que ser un ObjectId de Mongo"
+      }
+    };
+  }
   const nombre = {
     exists: {
       errorMessage: "Falta el nombre de la incidencia"
