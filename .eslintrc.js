@@ -31,5 +31,6 @@ module.exports = {
     "space-before-function-paren": "off",
     "no-param-reassign": "off",
     "no-restricted-globals": "off",
+    "no-multi-str": "off",
   },
 };

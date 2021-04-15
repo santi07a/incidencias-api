@@ -4,12 +4,13 @@ const cors = require("cors");
 const morgan = require("morgan");
 const chalk = require("chalk");
 const express = require("express");
+
 const options = require("./parametrosCLI");
 const rutasIncidencias = require("./rutas/incidencias");
 const rutasUsuarios = require("./rutas/usuarios");
 
 const {
-  serverError, notFoundError, generalError
+  serverError, notFoundError, manejaErrores
 } = require("./errores/errores");
 require("./db/db");
 
@@ -32,4 +33,4 @@ app.get("/", (req, res, next) => {
   res.redirect("/incidencias");
 });
 app.use(notFoundError);
-app.use(generalError);
+app.use(manejaErrores);
