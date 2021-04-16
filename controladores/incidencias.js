@@ -14,6 +14,19 @@ const getIncidencias = async () => {
   respuesta.incidencias = incidencias;
   return respuesta;
 };
+const getIncidencia = async id => {
+  const incidencia = await Incidencia.findById(id, "-_id");
+  const respuesta = {
+    incidencia: null,
+    error: null
+  };
+  if (incidencia) {
+    respuesta.incidencia = incidencia;
+  } else {
+    const error = generaError("La incidencia solicitada no existe", 404);
+    respuesta.error = error;
+  } return respuesta;
+};
 
 const postIncidencia = async (incidenciaRecibida) => {
   const respuesta = {
@@ -70,6 +83,7 @@ const borrarIncidencia = async idIncidencia => {
 
 module.exports = {
   getIncidencias,
+  getIncidencia,
   postIncidencia,
   putIncidencia,
   borrarIncidencia
