@@ -45,8 +45,52 @@ const crearUsuario = async nuevoUsuario => {
     respuesta.usuario = nuevoUsuarioBD;
   } return respuesta;
 };
+
+const putUsuario = async (usuarioRecibido, idUsuario) => {
+  const respuesta = {
+    usuario: null,
+    error: null
+  };
+  let usuarioCoincidente;
+  try {
+    usuarioCoincidente = await Usuario.findById(idUsuario);
+  } catch (err) {
+    if (err.message === `Cast to ObjectId failed for value "${err.value}" at path "_id" for model "Usuario"`) {
+      respuesta.error = generaError("La id introducida no tiene la forma correcta", 400);
+    }
+  }
+  if (usuarioCoincidente && !respuesta.error) {
+    await usuarioCoincidente.updateOne(usuarioRecibido);
+    respuesta.usuario = usuarioRecibido;
+  } else if (!respuesta.error) {
+    const { usuario: usuarioSustituido, error } = await crearUsuario(usuarioRecibido);
+    respuesta.usuario = usuarioSustituido;
+    respuesta.error = error;
+  }
+  return respuesta;
+};
+
+const borrarUsuario = async idUsuario => {
+  const respuesta = {
+    usuario: null,
+    error: null
+  };
+  let usuarioCoincidente = null;
+  try {
+    usuarioCoincidente = await Usuario.findById(idUsuario);
+    respuesta.usuario = usuarioCoincidente;
+  } catch (err) {
+    if (err.message === `Cast to ObjectId failed for value "${err.value}" at path "_id" for model "Usuario"`) {
+      respuesta.error = generaError("La id introducida no tiene la forma correcta", 400);
+    }
+  }
+  await Usuario.findByIdAndDelete(idUsuario);
+  return respuesta;
+};
 module.exports = {
   getUsuarios,
   getUsuario,
-  crearUsuario
+  crearUsuario,
+  putUsuario,
+  borrarUsuario
 };
