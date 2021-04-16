@@ -50,8 +50,27 @@ const putIncidencia = async (incidenciaRecibida, idIncidencia) => {
   return respuesta;
 };
 
+const borrarIncidencia = async idIncidencia => {
+  const respuesta = {
+    incidencia: null,
+    error: null
+  };
+  let incidenciaCoincidente = null;
+  try {
+    incidenciaCoincidente = await Incidencia.findById(idIncidencia);
+    respuesta.incidencia = incidenciaCoincidente;
+  } catch (err) {
+    if (err.message === `Cast to ObjectId failed for value "${err.value}" at path "_id" for model "Incidencia"`) {
+      respuesta.error = generaError("La id introducida no tiene la forma correcta", 400);
+    }
+  }
+  await Incidencia.findByIdAndDelete(idIncidencia);
+  return respuesta;
+};
+
 module.exports = {
   getIncidencias,
   postIncidencia,
-  putIncidencia
+  putIncidencia,
+  borrarIncidencia
 };
