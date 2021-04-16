@@ -16,7 +16,7 @@ const estructuraBase = incidencias => ({
 });
 
 router.get("/", async (req, res, next) => {
-  const { error, incidencias } = await getIncidencias();
+  const { error, incidencias } = await getIncidencias(req.query);
   if (error) {
     return next(error);
   }

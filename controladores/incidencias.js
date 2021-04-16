@@ -1,12 +1,17 @@
 const Incidencia = require("../db/modelos/incidencia");
 const { generaError } = require("../errores/errores");
 
-const getIncidencias = async () => {
+const getIncidencias = async queries => {
   const respuesta = {
     error: false,
     incidencias: null
   };
-  const incidencias = await Incidencia.find();
+  const direccionOrden = queries.orden === "DESC" ? -1 : 1;
+  const tipoOrden = queries.ordenPor === "fecha" ? "registrada" : "nombre";
+  const incidencias = await Incidencia.find()
+    .sort({ [tipoOrden]: direccionOrden })
+    .limit(queries.nPorPagina ? +queries.nPorPagina : 0)
+    .skip(queries.nPorPagina && queries.pagina ? (+queries.nPorPagina * +queries.pagina) - +queries.nPorPagina : 0);
   if (!incidencias) {
     const error = generaError("Error del servidor, no se ha podido realizar la petición", 500);
     respuesta.error = error;
