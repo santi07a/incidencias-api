@@ -15,8 +15,7 @@ const {
 require("./db/db");
 
 const app = express();
-
-const puerto = options.puerto || process.env.PUERTO || 5000;
+const puerto = process.env.HEROKU ? process.env.PORT : options.puerto || process.env.PUERTO || 5000;
 
 const server = app.listen(puerto, () => {
   debug(chalk.yellow(`Servidor escuchando en el puerto ${puerto}`));
