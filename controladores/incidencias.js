@@ -39,6 +39,7 @@ const postIncidencia = async (incidenciaRecibida) => {
     incidencia: null
   };
   const nuevaIncidencia = await Incidencia.create(incidenciaRecibida);
+  await nuevaIncidencia.updateOne({ fotoIncidencia: `incidencia${nuevaIncidencia.id}.png` });
   respuesta.incidencia = nuevaIncidencia;
   return respuesta;
 };
