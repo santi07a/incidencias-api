@@ -3,10 +3,10 @@ const debug = require("debug")("incidencias:incidencias");
 const { checkSchema } = require("express-validator");
 const md5 = require("md5");
 const {
-  getIncidencias, postIncidencia, putIncidencia
+  getIncidencias, postIncidencia, putIncidencia, borrarIncidencia
 } = require("../controladores/incidencias");
 const { getIncidenciaSchema } = require("../schemas/incidenciaSchema");
-const { badRequestError } = require("../errores/errores");
+const { generaError, badRequestError } = require("../errores/errores");
 
 const router = express.Router();
 
@@ -44,6 +44,14 @@ router.put("/:idIncidencia",
     } else {
       return res.status(201).json(respuesta.incidencia);
     }
+  });
+router.delete("/:idIncidencia",
+  async (req, res, next) => {
+    const respuesta = await borrarIncidencia(req.params.idIncidencia);
+    if (respuesta.error) {
+      return next(respuesta.error);
+    }
+    return res.json(respuesta.incidencia);
   });
 
 module.exports = router;
