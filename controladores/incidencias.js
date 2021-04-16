@@ -34,17 +34,16 @@ const putIncidencia = async (incidenciaRecibida, idIncidencia) => {
   try {
     incidenciaCoincidente = await Incidencia.findById(idIncidencia);
   } catch (err) {
-    if (err.message === "Cast to ObjectId failed for value \"45\" at path \"_id\" for model \"Incidencia\"") {
+    if (err.message === `Cast to ObjectId failed for value "${err.value}" at path "_id" for model "Incidencia"`) {
       respuesta.error = generaError("La id introducida no tiene la forma correcta", 400);
     }
   }
   if (incidenciaCoincidente && !respuesta.error) {
-    console.log(incidenciaCoincidente);
     await incidenciaCoincidente.updateOne(incidenciaRecibida);
     respuesta.incidencia = incidenciaRecibida;
   } else if (!respuesta.error) {
     /* tendriamos que devolver error si no se encuentra una incidencia coincidente? */
-    const { incidenciaSustituida, error } = await postIncidencia(incidenciaRecibida);
+    const { incidencia: incidenciaSustituida, error } = await postIncidencia(incidenciaRecibida);
     respuesta.incidencia = incidenciaSustituida;
     respuesta.error = error;
   }
