@@ -13,7 +13,7 @@ const UsuarioSchema = new Schema({
     type: String,
     required: true
   },
-  contraseña: {
+  contrasenya: {
     type: String,
     required: true
   },

@@ -26,7 +26,7 @@ const getUsuarioSchema = noEsPatch => {
       errorMessage: "Tienes que introducir un e-mail válido"
     }
   };
-  const contraseña = {
+  const contrasenya = {
     [noEsPatch ? "exists" : "optional"]: {
       errorMessage: "Faltan la contraseña del usuario"
     },
@@ -51,7 +51,7 @@ const getUsuarioSchema = noEsPatch => {
     nombre,
     apellidos,
     email,
-    contraseña,
+    contrasenya,
     telefono,
     direccion
   };
