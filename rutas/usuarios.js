@@ -1,7 +1,6 @@
 const express = require("express");
 const { checkSchema } = require("express-validator");
 const debug = require("debug")("incidencias:usuarios");
-const md5 = require("md5");
 const nodemailer = require("nodemailer");
 const { getUsuarios, getUsuario, crearUsuario } = require("../controladores/usuarios");
 const { badRequestError } = require("../errores/errores");
@@ -45,6 +44,8 @@ router.post("/usuario", checkSchema(getUsuarioSchemaCompleto),
       return next(error400);
     }
     const nuevoUsuario = req.body;
+    const fecha = new Date().getTime();
+    nuevoUsuario.fechaAlta = +fecha;
     const { usuario, error } = await crearUsuario(nuevoUsuario);
     if (error) {
       next(error);
@@ -61,8 +62,9 @@ router.post("/usuario", checkSchema(getUsuarioSchemaCompleto),
         } else {
           console.log(info);
         }
-        res.status(201).json({ id: usuario.id });
       });
+      res.status(201).json({ id: usuario.id });
     }
   });
+
 module.exports = router;

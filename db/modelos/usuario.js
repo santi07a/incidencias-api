@@ -20,7 +20,7 @@ const UsuarioSchema = new Schema({
   telefono: String,
   direccion: String,
   fechaAlta: {
-    type: String,
+    type: Number,
     required: true
   },
   incidenciasSeguidas: {
