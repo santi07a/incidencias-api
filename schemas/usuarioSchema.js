@@ -47,19 +47,13 @@ const getUsuarioSchema = noEsPatch => {
     notEmpty: true,
     errorMessage: "Introduce una dirección válida",
   };
-  const fechaAlta = {
-    [noEsPatch ? "exists" : "optional"]: true,
-    notEmpty: true,
-    errorMessage: "La fecha introducida tiene que tener formato timestamp",
-  };
   return {
     nombre,
     apellidos,
     email,
     contraseña,
     telefono,
-    direccion,
-    fechaAlta
+    direccion
   };
 };
 
