@@ -27,7 +27,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/usuario/:idUsuario", async (req, res, next) => {
+router.get("/:idUsuario", async (req, res, next) => {
   const id = req.params.idUsuario;
   const { usuario, error } = await getUsuario(id);
   if (error) {
@@ -37,7 +37,7 @@ router.get("/usuario/:idUsuario", async (req, res, next) => {
   }
 });
 
-router.post("/usuario", checkSchema(getUsuarioSchemaCompleto),
+router.post("/", checkSchema(getUsuarioSchemaCompleto),
   async (req, res, next) => {
     const error400 = badRequestError(req);
     if (error400) {
