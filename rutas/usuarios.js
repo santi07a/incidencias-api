@@ -8,6 +8,11 @@ const {
 const { badRequestError } = require("../errores/errores");
 const { getUsuarioSchemaCompleto, getUsuarioSchemaParcial } = require("../schemas/usuarioSchema");
 
+const estructuraBase = usuarios => ({
+  total: usuarios.length,
+  datos: usuarios
+});
+
 const transport = nodemailer.createTransport({
   host: "smtp-mail.outlook.com",
   port: 587,
@@ -25,7 +30,7 @@ router.get("/", async (req, res, next) => {
   if (error) {
     return next(error);
   } else {
-    res.json(usuarios);
+    res.json(estructuraBase(usuarios));
   }
 });
 
@@ -35,7 +40,7 @@ router.get("/:idUsuario", async (req, res, next) => {
   if (error) {
     next(error);
   } else {
-    res.json(usuario);
+    res.json(estructuraBase(usuario));
   }
 });
 
