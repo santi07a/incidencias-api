@@ -11,23 +11,17 @@ const getUsuarios = async () => {
     .then(usuario => {
       res.json(usuario);
     }); */
-  if (!usuarios) {
-    const error = generaError("No hay usuarios", 409);
-    informeRespuesta.error = error;
-  } else {
-    informeRespuesta.jsonResponse = estructuraJsonResponse({ usuarios });
-  }
+  informeRespuesta.jsonResponse = estructuraJsonResponse({ usuarios });
   return informeRespuesta;
 };
 
 const getUsuario = async idUsuario => {
   const informeRespuesta = new InformeRespuesta();
-  const usuario = await Usuario.findById(idUsuario, "-_id");
+  const usuario = await Usuario.findById(idUsuario);
   if (usuario) {
     informeRespuesta.jsonResponse = estructuraJsonResponse({ usuario });
   } else {
-    const error = generaError("El usuario solicitado no existe", 404);
-    informeRespuesta.error = error;
+    informeRespuesta.error = generaError("El usuario solicitado no existe", 404);
   }
   return informeRespuesta;
 };
@@ -40,8 +34,7 @@ const postUsuario = async usuarioRecibido => {
   });
   let usuarioCreado;
   if (usuarioEncontrado) {
-    const error = generaError("El usuario ya existe", 409);
-    informeRespuesta.error = error;
+    informeRespuesta.error = generaError("El usuario ya existe", 409);
   } else {
     const fecha = new Date().getTime();
     usuarioRecibido.fechaAlta = +fecha;
@@ -74,9 +67,7 @@ const putUsuario = async (usuarioRecibido, idUsuario) => {
     await usuarioCoincidente.updateOne(usuarioRecibido);
     informeRespuesta.jsonResponse = estructuraJsonResponse({ usuario: usuarioRecibido });
   } else if (!informeRespuesta.error) {
-    const { usuario: usuarioSustituido, error } = await crearUsuario(usuarioRecibido);
-    informeRespuesta.jsonResponse = estructuraJsonResponse({ usuario: usuarioSustituido });
-    informeRespuesta.error = error;
+    informeRespuesta.error = generaError("La id introducida no corresponde a ningún usuario", 400);
   }
   return informeRespuesta;
 };
