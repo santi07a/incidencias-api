@@ -25,8 +25,8 @@ const IncidenciaSchema = new Schema({
   latitud: Number,
   longitud: Number,
   tipoIncidencia: {
-    type: String,
-    required: true
+    type: Schema.Types.ObjectId,
+    ref: "TipoIncidencia"
   },
   resuelta: {
     type: Boolean,
