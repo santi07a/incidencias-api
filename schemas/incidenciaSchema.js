@@ -103,6 +103,18 @@ const getIncidenciaSchema = (requiereId) => {
   const tipoIncidencia = {
     exists: {
       errorMessage: "Falta el tipo de la incidencia"
+    },
+    custom: {
+      errorMessage: "El tipo de incidencia solo puede ser uno de los siguientes valores:\
+      [Civismo, Medio Ambiente, Infraestructura, Otros]",
+      options: (value) => {
+        const tipos = ["Civismo", "Medio Ambiente", "Infraestructura", "Otros"];
+        if (tipos.includes(value)) {
+          return true;
+        } else {
+          return false;
+        }
+      }
     }
   };
   const resuelta = {
