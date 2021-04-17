@@ -25,7 +25,8 @@ router.get("/:idUsuario", async (req, res, next) => {
     return res.json(informeRespuesta.jsonResponse);
   }
 });
-router.post("/", checkSchema(getUsuarioSchemaCompleto),
+router.post("/",
+  checkSchema(getUsuarioSchemaCompleto),
   async (req, res, next) => {
     const error = badRequestError(req);
     if (error) {

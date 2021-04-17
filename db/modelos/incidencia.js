@@ -7,7 +7,8 @@ const IncidenciaSchema = new Schema({
   },
   usuarioCreador: {
     type: Schema.Types.ObjectId,
-    ref: "Usuario"
+    ref: "Usuario",
+    required: true
   },
   fotoIncidencia: {
     type: String,
@@ -19,14 +20,15 @@ const IncidenciaSchema = new Schema({
   },
   direccion: String,
   registrada: {
-    type: String,
+    type: Number,
     required: true
   },
   latitud: Number,
   longitud: Number,
   tipoIncidencia: {
     type: Schema.Types.ObjectId,
-    ref: "TipoIncidencia"
+    ref: "TipoIncidencia",
+    required: true
   },
   resuelta: {
     type: Boolean,

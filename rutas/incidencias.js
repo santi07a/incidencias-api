@@ -14,12 +14,12 @@ router.get("/", async (req, res, next) => {
   const informeRespuesta = await getIncidencias(req.query);
   if (informeRespuesta.error) {
     return next(informeRespuesta.error);
+  } else {
+    return res.json(informeRespuesta.jsonResponse);
   }
-  return res.json(informeRespuesta.jsonResponse);
 });
 router.get("/:idIncidencia", async (req, res, next) => {
-  const id = req.params.idIncidencia;
-  const informeRespuesta = await getIncidencia(id);
+  const informeRespuesta = await getIncidencia(req.params.idIncidencia);
   if (informeRespuesta.error) {
     next(informeRespuesta.error);
   } else {

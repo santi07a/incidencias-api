@@ -5,7 +5,7 @@ const TipoIncidenciaSchema = new Schema({
     type: String,
     required: true
   }
-})
+});
 
 const TipoIncidencia = model("TipoIncidencia", TipoIncidenciaSchema, "tipoIncidencia");
 

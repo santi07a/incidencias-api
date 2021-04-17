@@ -23,10 +23,10 @@ const UsuarioSchema = new Schema({
     type: Number,
     required: true
   },
-  incidenciasSeguidas: {
-    type: [String],
-    required: true
-  }
+  incidenciasSeguidas: [{
+    type: Schema.Types.ObjectId,
+    ref: "Incidencia"
+  }]
 });
 
 const Usuario = model("Usuario", UsuarioSchema, "usuarios");

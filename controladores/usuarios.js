@@ -6,6 +6,11 @@ const transport = require("./utils/transportMail");
 const getUsuarios = async () => {
   const informeRespuesta = new InformeRespuesta();
   const usuarios = await Usuario.find();
+  /* const usuarios = await Usuario.find()
+    .populate("incidenciasSeguidas")
+    .then(usuario => {
+      res.json(usuario);
+    }); */
   if (!usuarios) {
     const error = generaError("No hay usuarios", 409);
     informeRespuesta.error = error;
@@ -14,9 +19,10 @@ const getUsuarios = async () => {
   }
   return informeRespuesta;
 };
-const getUsuario = async id => {
+
+const getUsuario = async idUsuario => {
   const informeRespuesta = new InformeRespuesta();
-  const usuario = await Usuario.findById(id, "-_id");
+  const usuario = await Usuario.findById(idUsuario, "-_id");
   if (usuario) {
     informeRespuesta.jsonResponse = estructuraJsonResponse({ usuario });
   } else {
@@ -52,24 +58,6 @@ const postUsuario = async usuarioRecibido => {
     informeRespuesta.jsonResponse = estructuraJsonResponse({ usuario: usuarioCreado });
   }
   return informeRespuesta;
-};
-
-const crearUsuario = async nuevoUsuario => {
-  const respuesta = {
-    usuario: null,
-    error: null
-  };
-  const usuarioEncontrado = await Usuario.findOne({
-    email: nuevoUsuario.email,
-    telefono: nuevoUsuario.telefono
-  });
-  if (usuarioEncontrado) {
-    const error = generaError("El usuario ya existe", 409);
-    respuesta.error = error;
-  } else {
-    const nuevoUsuarioBD = await Usuario.create(nuevoUsuario);
-    respuesta.usuario = nuevoUsuarioBD;
-  } return respuesta;
 };
 
 const putUsuario = async (usuarioRecibido, idUsuario) => {
@@ -115,7 +103,6 @@ module.exports = {
   getUsuarios,
   getUsuario,
   postUsuario,
-  crearUsuario,
   putUsuario,
   borrarUsuario
 };

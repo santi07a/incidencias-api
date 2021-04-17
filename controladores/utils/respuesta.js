@@ -1,4 +1,3 @@
-
 class InformeRespuesta {
   error = null;
   jsonResponse = null;

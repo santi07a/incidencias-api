@@ -60,21 +60,6 @@ const getIncidenciaSchema = (requiereId) => {
       }
     }
   };
-  const registrada = {
-    exists: {
-      errorMessage: "Falta la fecha de registro de la incidencia"
-    },
-    isInt: {
-      errorMessage: "La fecha de registro tiene que ser un timestamp"
-    },
-    isLength: {
-      errorMessage: "La fecha de registro tiene que ser un timestamp",
-      options: {
-        min: 13,
-        max: 13
-      }
-    }
-  };
   const latitud = {
     custom: {
       errorMessage: "Se tiene que incluir la dirección de la incidencia o las coordenadas\
@@ -134,7 +119,6 @@ const getIncidenciaSchema = (requiereId) => {
     fotoIncidencia,
     descripcion,
     direccion,
-    registrada,
     latitud,
     longitud,
     tipoIncidencia,
