@@ -10,28 +10,22 @@ const { generaError, badRequestError } = require("../errores/errores");
 
 const router = express.Router();
 
-const estructuraBase = incidencias => ({
-  total: incidencias.length,
-  datos: incidencias
-});
-
 router.get("/", async (req, res, next) => {
-  const { error, incidencias } = await getIncidencias(req.query);
-  if (error) {
-    return next(error);
+  const informeRespuesta = await getIncidencias(req.query);
+  if (informeRespuesta.error) {
+    return next(informeRespuesta.error);
   }
-  return res.json(estructuraBase(incidencias));
+  return res.json(informeRespuesta.jsonResponse);
 });
 router.get("/:idIncidencia", async (req, res, next) => {
   const id = req.params.idIncidencia;
-  const { incidencia, error } = await getIncidencia(id);
-  if (error) {
-    next(error);
+  const informeRespuesta = await getIncidencia(id);
+  if (informeRespuesta.error) {
+    next(informeRespuesta.error);
   } else {
-    res.json(estructuraBase(incidencia));
+    return res.json(informeRespuesta.jsonResponse);
   }
 });
-
 router.post("/",
   checkSchema(getIncidenciaSchema()),
   async (req, res, next) => {
@@ -39,11 +33,11 @@ router.post("/",
     if (error) {
       return next(error);
     }
-    const respuesta = await postIncidencia(req.body);
-    if (respuesta.error) {
-      return next(respuesta.error);
+    const informeRespuesta = await postIncidencia(req.body);
+    if (informeRespuesta.error) {
+      return next(informeRespuesta.error);
     } else {
-      return res.status(201).json(respuesta.incidencia);
+      return res.status(201).json(informeRespuesta.jsonResponse);
     }
   });
 router.put("/:idIncidencia",
@@ -53,20 +47,20 @@ router.put("/:idIncidencia",
     if (error) {
       return next(error);
     }
-    const respuesta = await putIncidencia(req.body, req.params.idIncidencia);
-    if (respuesta.error) {
-      return next(respuesta.error);
+    const informeRespuesta = await putIncidencia(req.body, req.params.idIncidencia);
+    if (informeRespuesta.error) {
+      return next(informeRespuesta.error);
     } else {
-      return res.status(201).json(respuesta.incidencia);
+      return res.status(201).json(informeRespuesta.jsonResponse);
     }
   });
 router.delete("/:idIncidencia",
   async (req, res, next) => {
-    const respuesta = await borrarIncidencia(req.params.idIncidencia);
-    if (respuesta.error) {
-      return next(respuesta.error);
+    const informeRespuesta = await borrarIncidencia(req.params.idIncidencia);
+    if (informeRespuesta.error) {
+      return next(informeRespuesta.error);
     }
-    return res.json(respuesta.incidencia);
+    return res.json(informeRespuesta.jsonResponse);
   });
 
 module.exports = router;
