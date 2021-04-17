@@ -13,6 +13,7 @@ const {
   serverError, notFoundError, manejaErrores
 } = require("./errores/errores");
 require("./db/db");
+require("./db/modelos/tipoIncidencia");
 
 const app = express();
 const puerto = process.env.HEROKU ? process.env.PORT : options.puerto || process.env.PUERTO || 5000;

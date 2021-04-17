@@ -24,7 +24,8 @@ const UsuarioSchema = new Schema({
     required: true
   },
   incidenciasSeguidas: {
-    type: [String],
+    type: [Schema.Types.ObjectId],
+    ref: "Incidencia",
     required: true
   }
 });
