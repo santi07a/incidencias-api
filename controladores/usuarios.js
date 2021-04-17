@@ -6,6 +6,11 @@ const transport = require("./utils/transportMail");
 const getUsuarios = async () => {
   const informeRespuesta = new InformeRespuesta();
   const usuarios = await Usuario.find();
+  /* const usuarios = await Usuario.find()
+    .populate("incidenciasSeguidas")
+    .then(usuario => {
+      res.json(usuario);
+    }); */
   if (!usuarios) {
     const error = generaError("No hay usuarios", 409);
     informeRespuesta.error = error;

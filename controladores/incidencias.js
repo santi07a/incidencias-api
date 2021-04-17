@@ -23,7 +23,9 @@ const getIncidencias = async queries => {
 
 const getIncidencia = async idIncidencia => {
   const informeRespuesta = new InformeRespuesta();
-  const incidencia = await Incidencia.findById(idIncidencia, "-_id");
+  const incidencia = await Incidencia.findById(idIncidencia, "-_id")
+    .populate("usuarioCreador", "nombre apellidos email telefono -_id")
+    .populate("tipoIncidencia", "tipo -_id");
   if (incidencia) {
     informeRespuesta.jsonResponse = estructuraJsonResponse({ incidencia });
   } else {
@@ -38,7 +40,10 @@ const postIncidencia = async incidenciaRecibida => {
   incidenciaRecibida.registrada = +fecha;
   const nuevaIncidencia = await Incidencia.create(incidenciaRecibida);
   await nuevaIncidencia.updateOne({ fotoIncidencia: `incidencia${nuevaIncidencia.id}.png` });
-  informeRespuesta.jsonResponse = estructuraJsonResponse({ incidencia: nuevaIncidencia });
+  const incidenciaPosteada = await Incidencia.findById(nuevaIncidencia.id, "-_id")
+    .populate("usuarioCreador", "nombre apellidos email telefono -_id")
+    .populate("tipoIncidencia", "tipo -_id");
+  informeRespuesta.jsonResponse = estructuraJsonResponse({ incidencia: incidenciaPosteada });
   return informeRespuesta;
 };
 
@@ -54,7 +59,10 @@ const putIncidencia = async (incidenciaRecibida, idIncidencia) => {
   }
   if (incidenciaCoincidente && !informeRespuesta.error) {
     await incidenciaCoincidente.updateOne(incidenciaRecibida);
-    informeRespuesta.jsonResponse = estructuraJsonResponse({ incidencia: incidenciaRecibida });
+    const incidenciaModificada = await Incidencia.findById(idIncidencia, "-_id")
+      .populate("usuarioCreador", "nombre apellidos email telefono -_id")
+      .populate("tipoIncidencia", "tipo -_id");
+    informeRespuesta.jsonResponse = estructuraJsonResponse({ incidencia: incidenciaModificada });
   } else if (!informeRespuesta.error) {
     /* tendriamos que devolver error si no se encuentra una incidencia coincidente? */
     const { incidencia: incidenciaSustituida, error } = await postIncidencia(incidenciaRecibida);
@@ -68,7 +76,9 @@ const borrarIncidencia = async idIncidencia => {
   const informeRespuesta = new InformeRespuesta();
   let incidenciaCoincidente = null;
   try {
-    incidenciaCoincidente = await Incidencia.findById(idIncidencia);
+    incidenciaCoincidente = await Incidencia.findById(idIncidencia)
+      .populate("usuarioCreador", "nombre apellidos email telefono -_id")
+      .populate("tipoIncidencia", "tipo -_id");
   } catch (err) {
     if (err.message === `Cast to ObjectId failed for value "${err.value}" at path "_id" for model "Incidencia"`) {
       informeRespuesta.error = generaError("La id introducida no tiene la forma correcta", 400);
