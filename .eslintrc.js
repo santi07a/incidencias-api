@@ -13,6 +13,7 @@ module.exports = {
   rules: {
     quotes: ["error", "double"],
     semi: "error",
+    parser: "babel-eslint",
     "no-console": "off",
     "comma-dangle": "off",
     "arrow-parens": "off",
