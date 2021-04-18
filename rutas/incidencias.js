@@ -19,7 +19,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 router.get("/medio-ambiente", async (req, res, next) => {
-  const informeRespuesta = await getIncidencias(req.query, "Medio Ambiente");
+  const informeRespuesta = await getIncidencias(req.query, "607afd503abfa112fc791cd2");
   if (informeRespuesta.error) {
     return next(informeRespuesta.error);
   } else {
@@ -27,7 +27,7 @@ router.get("/medio-ambiente", async (req, res, next) => {
   }
 });
 router.get("/civismo", async (req, res, next) => {
-  const informeRespuesta = await getIncidencias(req.query, "Civismo");
+  const informeRespuesta = await getIncidencias(req.query, "607afd503abfa112fc791cd1");
   if (informeRespuesta.error) {
     return next(informeRespuesta.error);
   } else {
@@ -35,7 +35,7 @@ router.get("/civismo", async (req, res, next) => {
   }
 });
 router.get("/infraestructura", async (req, res, next) => {
-  const informeRespuesta = await getIncidencias(req.query, "Infraestructura");
+  const informeRespuesta = await getIncidencias(req.query, "607afd503abfa112fc791cd3");
   if (informeRespuesta.error) {
     return next(informeRespuesta.error);
   } else {
@@ -43,7 +43,7 @@ router.get("/infraestructura", async (req, res, next) => {
   }
 });
 router.get("/otros", async (req, res, next) => {
-  const informeRespuesta = await getIncidencias(req.query, "Otros");
+  const informeRespuesta = await getIncidencias(req.query, "607afd503abfa112fc791cd4");
   if (informeRespuesta.error) {
     return next(informeRespuesta.error);
   } else {
