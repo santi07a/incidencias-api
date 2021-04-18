@@ -25,7 +25,6 @@ const badRequestError = req => {
   let error;
   if (!errores.isEmpty()) {
     error = generaError("El objeto introducido no tiene la forma correcta", 400);
-    console.log(errores.mapped());
   }
   return error;
 };
