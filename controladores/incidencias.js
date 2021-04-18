@@ -3,11 +3,15 @@ const TipoIncidencia = require("../db/modelos/tipoIncidencia");
 const { generaError } = require("../errores/errores");
 const { InformeRespuesta, estructuraJsonResponse } = require("./utils/respuesta");
 
-const getIncidencias = async queries => {
+const getIncidencias = async (queries, tipo) => {
+  const condicion = {};
+  if (tipo) {
+    condicion.tipoIncidencia = tipo;
+  }
   const informeRespuesta = new InformeRespuesta();
   const direccionOrden = queries.orden === "DESC" ? -1 : 1;
   const tipoOrden = queries.ordenPor === "fecha" ? "registrada" : "nombre";
-  const incidencias = await Incidencia.find()
+  const incidencias = await Incidencia.find(condicion)
     .sort({ [tipoOrden]: direccionOrden })
     .limit(queries.nPorPagina ? +queries.nPorPagina : 0)
     .skip(queries.nPorPagina && queries.pagina ? (+queries.nPorPagina * +queries.pagina) - +queries.nPorPagina : 0)
