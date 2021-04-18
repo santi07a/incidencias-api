@@ -6,6 +6,8 @@ const transport = require("./utils/transportMail");
 const getUsuarios = async () => {
   const informeRespuesta = new InformeRespuesta();
   const usuarios = await Usuario.find();
+  /* .populate({ path: "incidenciasSeguidas", model: "Incidencia", select: "nombre descripcion" }); */
+  /* .populate("incidenciasSeguidas.incidencia", "nombre descripcion"); */
   /* const usuarios = await Usuario.find()
     .populate("incidenciasSeguidas")
     .then(usuario => {
