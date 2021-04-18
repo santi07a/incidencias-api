@@ -19,6 +19,7 @@ const IncidenciaSchema = new Schema({
     required: true
   },
   direccion: String,
+  codigoPostal: String,
   registrada: {
     type: Number,
     required: true
@@ -33,7 +34,8 @@ const IncidenciaSchema = new Schema({
   resuelta: {
     type: Boolean,
     required: true
-  }
+  },
+  comentario: String
 });
 
 const Incidencia = model("Incidencia", IncidenciaSchema, "incidencias");

@@ -18,6 +18,38 @@ router.get("/", async (req, res, next) => {
     return res.json(informeRespuesta.jsonResponse);
   }
 });
+router.get("/medio-ambiente", async (req, res, next) => {
+  const informeRespuesta = await getIncidencias(req.query, "607afd503abfa112fc791cd2");
+  if (informeRespuesta.error) {
+    return next(informeRespuesta.error);
+  } else {
+    return res.json(informeRespuesta.jsonResponse);
+  }
+});
+router.get("/civismo", async (req, res, next) => {
+  const informeRespuesta = await getIncidencias(req.query, "607afd503abfa112fc791cd1");
+  if (informeRespuesta.error) {
+    return next(informeRespuesta.error);
+  } else {
+    return res.json(informeRespuesta.jsonResponse);
+  }
+});
+router.get("/infraestructura", async (req, res, next) => {
+  const informeRespuesta = await getIncidencias(req.query, "607afd503abfa112fc791cd3");
+  if (informeRespuesta.error) {
+    return next(informeRespuesta.error);
+  } else {
+    return res.json(informeRespuesta.jsonResponse);
+  }
+});
+router.get("/otros", async (req, res, next) => {
+  const informeRespuesta = await getIncidencias(req.query, "607afd503abfa112fc791cd4");
+  if (informeRespuesta.error) {
+    return next(informeRespuesta.error);
+  } else {
+    return res.json(informeRespuesta.jsonResponse);
+  }
+});
 router.get("/:idIncidencia", async (req, res, next) => {
   const informeRespuesta = await getIncidencia(req.params.idIncidencia);
   if (informeRespuesta.error) {
