@@ -3,10 +3,11 @@ const TipoIncidencia = require("../db/modelos/tipoIncidencia");
 const { generaError } = require("../errores/errores");
 const { InformeRespuesta, estructuraJsonResponse } = require("./utils/respuesta");
 
-const getIncidencias = async (queries, tipo) => {
+const getIncidencias = async (queries) => {
   const condicion = {};
-  if (tipo) {
-    condicion.tipoIncidencia = tipo;
+  if (queries.tipo) {
+    const [tipoIncidencia] = await TipoIncidencia.find({ tipo: queries.tipo });
+    condicion.tipoIncidencia = tipoIncidencia._id;
   }
   const informeRespuesta = new InformeRespuesta();
   const direccionOrden = queries.orden === "DESC" ? -1 : 1;
