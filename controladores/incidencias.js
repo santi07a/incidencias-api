@@ -6,7 +6,7 @@ const { InformeRespuesta, estructuraJsonResponse } = require("./utils/respuesta"
 const getIncidencias = async (queries) => {
   const condicion = {};
   if (queries.tipo) {
-    const [tipoIncidencia] = await TipoIncidencia.find({ tipo: queries.tipo });
+    const [tipoIncidencia] = await TipoIncidencia.find({ tipo: queries.tipo.split("-").join(" ") });
     condicion.tipoIncidencia = tipoIncidencia._id;
   }
   const informeRespuesta = new InformeRespuesta();
@@ -24,12 +24,19 @@ const getIncidencias = async (queries) => {
 
 const getIncidencia = async idIncidencia => {
   const informeRespuesta = new InformeRespuesta();
-  const incidencia = await Incidencia.findById(idIncidencia)
-    .populate("usuarioCreador", "nombre apellidos email telefono -_id")
-    .populate("tipoIncidencia", "tipo -_id");
-  if (incidencia) {
+  let incidencia;
+  try {
+    incidencia = await Incidencia.findById(idIncidencia)
+      .populate("usuarioCreador", "nombre apellidos email telefono -_id")
+      .populate("tipoIncidencia", "tipo -_id");
+  } catch (err) {
+    if (err.message === `Cast to ObjectId failed for value "${err.value}" at path "_id" for model "Incidencia"`) {
+      informeRespuesta.error = generaError("La id introducida no tiene la forma correcta", 400);
+    }
+  }
+  if (incidencia && !informeRespuesta.error) {
     informeRespuesta.jsonResponse = estructuraJsonResponse({ incidencia });
-  } else {
+  } else if (!informeRespuesta.error) {
     informeRespuesta.error = generaError("La incidencia solicitada no existe", 404);
   } return informeRespuesta;
 };

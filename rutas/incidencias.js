@@ -18,14 +18,6 @@ router.get("/", async (req, res, next) => {
     return res.json(informeRespuesta.jsonResponse);
   }
 });
-router.get("/medio-ambiente", async (req, res, next) => {
-  const informeRespuesta = await getIncidencias(req.query, "607afd503abfa112fc791cd2");
-  if (informeRespuesta.error) {
-    return next(informeRespuesta.error);
-  } else {
-    return res.json(informeRespuesta.jsonResponse);
-  }
-});
 router.get("/:idIncidencia", async (req, res, next) => {
   const informeRespuesta = await getIncidencia(req.params.idIncidencia);
   if (informeRespuesta.error) {
