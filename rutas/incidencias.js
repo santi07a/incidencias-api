@@ -49,7 +49,11 @@ router.post("/",
     const ficheroFB = datos.createWriteStream({ resumable: false });
     if (req.file) {
       ficheroFB.end(req.file.buffer);
-      ficheroFB.on("error", err => { if (err) return err })
+      ficheroFB.on("error", err => {
+        const error = generaError("no se pudo guardar tu imagen", 418)
+        if (err)
+          return error
+      })
       ficheroFB.on("finish", () => {
         console.log(`el archivo con url : https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${datos.name}?alt=media se cargó correctamente`);
       });
