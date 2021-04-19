@@ -4,7 +4,6 @@ const cors = require("cors");
 const morgan = require("morgan");
 const chalk = require("chalk");
 const express = require("express");
-
 const options = require("./parametrosCLI");
 const rutasIncidencias = require("./rutas/incidencias");
 const rutasUsuarios = require("./rutas/usuarios");

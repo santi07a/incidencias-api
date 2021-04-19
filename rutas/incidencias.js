@@ -7,6 +7,16 @@ const {
 } = require("../controladores/incidencias");
 const { getIncidenciaSchema } = require("../schemas/incidenciaSchema");
 const { generaError, badRequestError } = require("../errores/errores");
+const admin = require("firebase-admin");
+const multer = require("multer");
+const serviceAccount = require("../proyecto-final-c019d-firebase-adminsdk-444yf-f7034bca75.json")
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: "proyecto-final-c019d.appspot.com"
+});
+
+const bucket = admin.storage().bucket();
 
 const router = express.Router();
 
@@ -27,19 +37,31 @@ router.get("/:idIncidencia", async (req, res, next) => {
   }
 });
 router.post("/",
-  checkSchema(getIncidenciaSchema()),
+  multer().single("fotoIncidencia"), checkSchema(getIncidenciaSchema()),
   async (req, res, next) => {
     const error = badRequestError(req);
     if (error) {
       return next(error);
     }
-    const informeRespuesta = await postIncidencia(req.body);
+    const informeRespuesta = await postIncidencia(req.body, req.file.originalname);
+    const datos = bucket.file(informeRespuesta.jsonResponse.body.incidencia.fotoIncidencia);
+    const existe = await datos.exists();
+    const ficheroFB = datos.createWriteStream({ resumable: false });
+    if (req.file) {
+      ficheroFB.end(req.file.buffer);
+      ficheroFB.on("error", err => { if (err) return err })
+      ficheroFB.on("finish", () => {
+        console.log(`el archivo con url : https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${datos.name}?alt=media se cargó correctamente`);
+      });
+    }
     if (informeRespuesta.error) {
       return next(informeRespuesta.error);
     } else {
       return res.status(201).json(informeRespuesta.jsonResponse);
     }
-  });
+  })
+
+
 router.put("/:idIncidencia",
   checkSchema(getIncidenciaSchema(true)),
   async (req, res, next) => {

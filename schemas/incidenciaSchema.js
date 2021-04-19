@@ -38,9 +38,7 @@ const getIncidenciaSchema = (requiereId) => {
     }
   };
   const fotoIncidencia = {
-    exists: {
-      errorMessage: "Falta la foto de la incidencia"
-    }
+    errorMessage: "Falta la foto de la incidencia"
   };
   const descripcion = {
     exists: {
