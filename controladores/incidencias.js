@@ -35,14 +35,14 @@ const getIncidencia = async idIncidencia => {
   } return informeRespuesta;
 };
 
-const postIncidencia = async incidenciaRecibida => {
+const postIncidencia = async (incidenciaRecibida, nombreOriginal) => {
   const informeRespuesta = new InformeRespuesta();
   const [tipoIncidencia] = await TipoIncidencia.find({ tipo: incidenciaRecibida.tipoIncidencia });
   incidenciaRecibida.tipoIncidencia = `${tipoIncidencia._id}`;
   const fecha = new Date().getTime();
   incidenciaRecibida.registrada = +fecha;
   const nuevaIncidencia = await Incidencia.create(incidenciaRecibida);
-  const extension = await path.extname(nuevaIncidencia.fotoIncidencia);
+  const extension = path.extname(nombreOriginal);
   await nuevaIncidencia.updateOne({ fotoIncidencia: `incidencia${nuevaIncidencia.id}${extension}` });
   const incidenciaPosteada = await Incidencia.findById(nuevaIncidencia.id)
     .populate("usuarioCreador", "nombre apellidos email telefono -_id")

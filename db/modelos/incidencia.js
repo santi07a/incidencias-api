@@ -10,20 +10,14 @@ const IncidenciaSchema = new Schema({
     ref: "Usuario",
     required: true
   },
-  fotoIncidencia: {
-    type: String,
-    required: true
-  },
   descripcion: {
     type: String,
     required: true
   },
+  fotoIncidencia: String,
   direccion: String,
   codigoPostal: String,
-  registrada: {
-    type: Number,
-    required: true
-  },
+  registrada: Number,
   latitud: Number,
   longitud: Number,
   tipoIncidencia: {

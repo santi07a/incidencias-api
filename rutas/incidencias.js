@@ -45,30 +45,21 @@ router.get("/:idIncidencia", async (req, res, next) => {
   }
 });
 router.post("/",
-  checkSchema(getIncidenciaSchema()), multer().single("fotoIncidencia"),
+  multer().single("fotoIncidencia"), checkSchema(getIncidenciaSchema()),
   async (req, res, next) => {
     const error = badRequestError(req);
     if (error) {
       return next(error);
     }
-    const informeRespuesta = await postIncidencia(req.body);
+    const informeRespuesta = await postIncidencia(req.body, req.file.originalname);
     const datos = bucket.file(informeRespuesta.jsonResponse.body.incidencia.fotoIncidencia);
     const existe = await datos.exists();
     const ficheroFB = datos.createWriteStream({ resumable: false });
     if (req.file) {
       ficheroFB.end(req.file.buffer);
-      ficheroFB.on("error", err => {
-        const error = {
-          codigo: err.codigo || 500,
-          mensaje: err.codigo ? err.message : "Ha ocurrido un error general"
-        };
-        if (error) {
-          res.status(error.codigo).json({ error: true, mensaje: error.mensaje });
-        }
-      });
+      ficheroFB.on("error", err => { if (err) return err })
       ficheroFB.on("finish", () => {
-        console.log("el archivo se subió correctamente")
-        console.log(`https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${datos.name}?alt=media`);
+        console.log(`el archivo con url : https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${datos.name}?alt=media se cargó correctamente`);
       });
     }
     if (informeRespuesta.error) {
