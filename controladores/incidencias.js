@@ -2,6 +2,7 @@ const Incidencia = require("../db/modelos/incidencia");
 const TipoIncidencia = require("../db/modelos/tipoIncidencia");
 const { generaError } = require("../errores/errores");
 const { InformeRespuesta, estructuraJsonResponse } = require("./utils/respuesta");
+const path = require('path');
 
 const getIncidencias = async (queries) => {
   const condicion = {};
@@ -41,7 +42,8 @@ const postIncidencia = async incidenciaRecibida => {
   const fecha = new Date().getTime();
   incidenciaRecibida.registrada = +fecha;
   const nuevaIncidencia = await Incidencia.create(incidenciaRecibida);
-  await nuevaIncidencia.updateOne({ fotoIncidencia: `incidencia${nuevaIncidencia.id}.png` });
+  const extension = await path.extname(nuevaIncidencia.fotoIncidencia);
+  await nuevaIncidencia.updateOne({ fotoIncidencia: `incidencia${nuevaIncidencia.id}${extension}` });
   const incidenciaPosteada = await Incidencia.findById(nuevaIncidencia.id)
     .populate("usuarioCreador", "nombre apellidos email telefono -_id")
     .populate("tipoIncidencia", "tipo -_id");
