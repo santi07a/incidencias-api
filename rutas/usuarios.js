@@ -25,6 +25,15 @@ router.get("/:idUsuario", async (req, res, next) => {
     return res.json(informeRespuesta.jsonResponse);
   }
 });
+router.post("/login", async (req, res, next) => {
+  const { email, password } = req.body;
+  const { error, usuario } = await loginUsuario(email, password);
+  if (error) {
+    next(error);
+  } else {
+    res.json({ token: usuario });
+  }
+});
 router.post("/",
   checkSchema(getUsuarioSchemaCompleto),
   async (req, res, next) => {

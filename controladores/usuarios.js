@@ -1,7 +1,11 @@
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
 const Usuario = require("../db/modelos/usuario");
 const { generaError } = require("../errores/errores");
 const { InformeRespuesta, estructuraJsonResponse } = require("./utils/respuesta");
 const transport = require("./utils/transportMail");
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const getUsuarios = async () => {
   const informeRespuesta = new InformeRespuesta();
@@ -40,6 +44,9 @@ const postUsuario = async usuarioRecibido => {
   } else {
     const fecha = new Date().getTime();
     usuarioRecibido.fechaAlta = +fecha;
+    passNueva = bcrypt.hash(usuarioRecibido.contrasenya, saltRounds, function (err, hash) {
+      console.log(hash)
+    });
     usuarioCreado = await Usuario.create(usuarioRecibido);
   }
   if (!informeRespuesta.error) {
@@ -47,7 +54,7 @@ const postUsuario = async usuarioRecibido => {
       from: "ciutadaverd@outlook.es",
       to: usuarioCreado.email,
       subject: "Confirmación registro en Ciutadà Verd",
-      html: (`<h1>Su registro ha sido confirmado</h1><br/><p>Muchas gracias por registrarte con nosotros, ${usuarioCreado.nombre}. Hoy eres un ciudadano más comprometido con el ambiente y con la ciudad.</p><br/><p style="color:#5d9b9b">Para seguir navegando en nuestra web presiona <strong style="text-decoration-line:underline">aquí</strong></p>`)
+      html: (`<h1>Su registro ha sido confirmado</h1><br/><p>Muchas gracias por registrarte con nosotros, ${usuarioCreado.nombre}. Para confirmar tu registro por favor haz click <strong style="color:#5d9b9b text-decoration-line:underline">aquí</strong>. <br/> Hoy eres un ciudadano más comprometido con el ambiente y con la ciudad.</p>`)
     };
     transport.sendMail(mensaje);
     informeRespuesta.jsonResponse = estructuraJsonResponse({ usuario: usuarioCreado });
@@ -92,10 +99,35 @@ const borrarUsuario = async idUsuario => {
   }
   return informeRespuesta;
 };
+
+const loginUsuario = async (email, password) => {
+  const usuarioEncontrado = await Usuario.findOne({
+    email,
+    password
+  });
+  const respuesta = {
+    error: null,
+    usuario: null
+  };
+  if (!usuarioEncontrado) {
+    respuesta.error = generaError("Credenciales erróneas", 403);
+  } else {
+    const token = jwt.sign({
+      id: usuarioEncontrado._id,
+      nombre: usuarioEncontrado.nombre,
+      rol: usuarioEncontrado.rol
+    }, process.env.JWT_SECRET, {
+      expiresIn: "10d"
+    });
+    respuesta.usuario = token;
+  }
+  return respuesta;
+};
 module.exports = {
   getUsuarios,
   getUsuario,
   postUsuario,
   putUsuario,
-  borrarUsuario
+  borrarUsuario,
+  loginUsuario
 };
