@@ -2,11 +2,12 @@ const Incidencia = require("../db/modelos/incidencia");
 const TipoIncidencia = require("../db/modelos/tipoIncidencia");
 const { generaError } = require("../errores/errores");
 const { InformeRespuesta, estructuraJsonResponse } = require("./utils/respuesta");
+const path = require('path');
 
 const getIncidencias = async (queries) => {
   const condicion = {};
   if (queries.tipo) {
-    const [tipoIncidencia] = await TipoIncidencia.find({ tipo: queries.tipo });
+    const [tipoIncidencia] = await TipoIncidencia.find({ tipo: queries.tipo.split("-").join(" ") });
     condicion.tipoIncidencia = tipoIncidencia._id;
   }
   const informeRespuesta = new InformeRespuesta();
@@ -24,24 +25,32 @@ const getIncidencias = async (queries) => {
 
 const getIncidencia = async idIncidencia => {
   const informeRespuesta = new InformeRespuesta();
-  const incidencia = await Incidencia.findById(idIncidencia)
-    .populate("usuarioCreador", "nombre apellidos email telefono -_id")
-    .populate("tipoIncidencia", "tipo -_id");
-  if (incidencia) {
+  let incidencia;
+  try {
+    incidencia = await Incidencia.findById(idIncidencia)
+      .populate("usuarioCreador", "nombre apellidos email telefono -_id")
+      .populate("tipoIncidencia", "tipo -_id");
+  } catch (err) {
+    if (err.message === `Cast to ObjectId failed for value "${err.value}" at path "_id" for model "Incidencia"`) {
+      informeRespuesta.error = generaError("La id introducida no tiene la forma correcta", 400);
+    }
+  }
+  if (incidencia && !informeRespuesta.error) {
     informeRespuesta.jsonResponse = estructuraJsonResponse({ incidencia });
-  } else {
+  } else if (!informeRespuesta.error) {
     informeRespuesta.error = generaError("La incidencia solicitada no existe", 404);
   } return informeRespuesta;
 };
 
-const postIncidencia = async incidenciaRecibida => {
+const postIncidencia = async (incidenciaRecibida, nombreOriginal) => {
   const informeRespuesta = new InformeRespuesta();
   const [tipoIncidencia] = await TipoIncidencia.find({ tipo: incidenciaRecibida.tipoIncidencia });
   incidenciaRecibida.tipoIncidencia = `${tipoIncidencia._id}`;
   const fecha = new Date().getTime();
   incidenciaRecibida.registrada = +fecha;
   const nuevaIncidencia = await Incidencia.create(incidenciaRecibida);
-  await nuevaIncidencia.updateOne({ fotoIncidencia: `incidencia${nuevaIncidencia.id}.png` });
+  const extension = path.extname(nombreOriginal);
+  await nuevaIncidencia.updateOne({ fotoIncidencia: `incidencia${nuevaIncidencia.id}${extension}` });
   const incidenciaPosteada = await Incidencia.findById(nuevaIncidencia.id)
     .populate("usuarioCreador", "nombre apellidos email telefono -_id")
     .populate("tipoIncidencia", "tipo -_id");

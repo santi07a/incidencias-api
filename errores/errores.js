@@ -30,6 +30,9 @@ const badRequestError = req => {
 };
 
 const manejaErrores = (err, req, res, next) => {
+  if (err.type === "entity.parse.failed") {
+    return res.status(400).json({ error: true, mensaje: "El objeto introducido no tiene la forma correcta" });
+  }
   const error = {
     codigo: err.codigo || 500,
     mensaje: err.codigo ? err.message : "Ha ocurrido un error general"
