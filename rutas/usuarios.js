@@ -2,7 +2,7 @@ const express = require("express");
 const { checkSchema } = require("express-validator");
 const debug = require("debug")("incidencias:usuarios");
 const {
-  getUsuarios, getUsuario, getUsuarioEmail, postUsuario, putUsuario, borrarUsuario, loginUsuario
+  getUsuarios, getUsuario, postUsuario, putUsuario, borrarUsuario, loginUsuario
 } = require("../controladores/usuarios");
 const { badRequestError } = require("../errores/errores");
 const authUsuario = require("../middlewares/authUsuario");
@@ -11,6 +11,7 @@ const { getUsuarioSchemaCompleto, getUsuarioSchemaParcial } = require("../schema
 const router = express.Router();
 
 router.get("/",
+  authUsuario,
   async (req, res, next) => {
     const informeRespuesta = await getUsuarios(req.query);
     if (informeRespuesta.error) {
@@ -19,32 +20,18 @@ router.get("/",
       return res.json(informeRespuesta.jsonResponse);
     }
   });
-router.get("/:idUsuario", async (req, res, next) => {
-  const informeRespuesta = await getUsuario(req.params.idUsuario);
-  if (informeRespuesta.error) {
-    return next(informeRespuesta.error);
-  } else {
-    return res.json(informeRespuesta.jsonResponse);
-  }
-});
-router.post("/login", async (req, res, next) => {
-  const { email, contrasenya } = req.body;
-  const { error, usuario } = await loginUsuario(email, contrasenya);
-  if (error) {
-    next(error);
-  } else {
-    res.json({ token: usuario });
-  }
-});
-/* router.get("/:idUsuario", async (req, res, next) => {
-  const informeRespuesta = await getUsuarioEmail(req.params.idUsuario);
-  if (informeRespuesta.error) {
-    return next(informeRespuesta.error);
-  } else {
-    return res.json(informeRespuesta.jsonResponse);
-  }
-}); */
+router.get("/:idUsuario",
+  authUsuario,
+  async (req, res, next) => {
+    const informeRespuesta = await getUsuario(req.params.idUsuario);
+    if (informeRespuesta.error) {
+      return next(informeRespuesta.error);
+    } else {
+      return res.json(informeRespuesta.jsonResponse);
+    }
+  });
 router.post("/",
+  authUsuario,
   checkSchema(getUsuarioSchemaCompleto),
   async (req, res, next) => {
     const error = badRequestError(req);
@@ -58,7 +45,17 @@ router.post("/",
       return res.status(201).json(informeRespuesta.jsonResponse);
     }
   });
+router.post("/login", async (req, res, next) => {
+  const { email, contrasenya } = req.body;
+  const informeRespuesta = await loginUsuario(email, contrasenya);
+  if (informeRespuesta.error) {
+    next(informeRespuesta.error);
+  } else {
+    res.json(informeRespuesta.jsonResponse);
+  }
+});
 router.put("/:idUsuario",
+  authUsuario,
   checkSchema(getUsuarioSchemaCompleto),
   async (req, res, next) => {
     const error = badRequestError(req);
@@ -73,6 +70,7 @@ router.put("/:idUsuario",
     }
   });
 router.delete("/:idUsuario",
+  authUsuario,
   async (req, res, next) => {
     const informeRespuesta = await borrarUsuario(req.params.idUsuario);
     if (informeRespuesta.error) {
