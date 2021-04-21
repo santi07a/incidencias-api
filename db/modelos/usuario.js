@@ -20,8 +20,7 @@ const UsuarioSchema = new Schema({
   telefono: String,
   direccion: String,
   fechaAlta: {
-    type: Number,
-    required: true
+    type: Number
   },
   incidenciasSeguidas: [{
     type: Schema.Types.ObjectId,

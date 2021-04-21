@@ -9,7 +9,8 @@ const { getIncidenciaSchema } = require("../schemas/incidenciaSchema");
 const { generaError, badRequestError } = require("../errores/errores");
 const admin = require("firebase-admin");
 const multer = require("multer");
-const serviceAccount = require("../proyecto-final-c019d-firebase-adminsdk-444yf-f7034bca75.json")
+const serviceAccount = require("../proyecto-final-c019d-firebase-adminsdk-444yf-f7034bca75.json");
+const authUsuario = require("../middlewares/authUsuario");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -28,15 +29,18 @@ router.get("/", async (req, res, next) => {
     return res.json(informeRespuesta.jsonResponse);
   }
 });
-router.get("/:idIncidencia", async (req, res, next) => {
-  const informeRespuesta = await getIncidencia(req.params.idIncidencia);
-  if (informeRespuesta.error) {
-    next(informeRespuesta.error);
-  } else {
-    return res.json(informeRespuesta.jsonResponse);
-  }
-});
+router.get("/:idIncidencia",
+  authUsuario,
+  async (req, res, next) => {
+    const informeRespuesta = await getIncidencia(req.params.idIncidencia);
+    if (informeRespuesta.error) {
+      next(informeRespuesta.error);
+    } else {
+      return res.json(informeRespuesta.jsonResponse);
+    }
+  });
 router.post("/",
+  authUsuario,
   multer().single("fotoIncidencia"), checkSchema(getIncidenciaSchema()),
   async (req, res, next) => {
     const error = badRequestError(req);
@@ -67,6 +71,7 @@ router.post("/",
 
 
 router.put("/:idIncidencia",
+  authUsuario,
   checkSchema(getIncidenciaSchema(true)),
   async (req, res, next) => {
     const error = badRequestError(req);
@@ -81,6 +86,7 @@ router.put("/:idIncidencia",
     }
   });
 router.delete("/:idIncidencia",
+  authUsuario,
   async (req, res, next) => {
     const informeRespuesta = await borrarIncidencia(req.params.idIncidencia);
     if (informeRespuesta.error) {
@@ -88,5 +94,6 @@ router.delete("/:idIncidencia",
     }
     return res.json(informeRespuesta.jsonResponse);
   });
+
 
 module.exports = router;
