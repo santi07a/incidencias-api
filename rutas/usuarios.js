@@ -48,6 +48,7 @@ router.post("/login",
     return res.json(informeRespuesta.jsonResponse);
   }
 }); */
+
 router.post("/",
   checkSchema(getUsuarioSchemaCompleto),
   async (req, res, next) => {
@@ -62,6 +63,7 @@ router.post("/",
       return res.status(201).json(informeRespuesta.jsonResponse);
     }
   });
+
 router.put("/:idUsuario",
   authUsuario,
   checkSchema(getUsuarioSchemaCompleto),
