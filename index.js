@@ -28,7 +28,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
 app.use("/incidencias", rutasIncidencias);
-app.use("/usuarios", authUsuario, rutasUsuarios);
+app.use("/usuarios", rutasUsuarios);
 app.get("/", (req, res, next) => {
   res.redirect("/incidencias");
 });
