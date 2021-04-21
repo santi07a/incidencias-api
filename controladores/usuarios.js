@@ -1,7 +1,10 @@
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
 const Usuario = require("../db/modelos/usuario");
 const { generaError } = require("../errores/errores");
 const { InformeRespuesta, estructuraJsonResponse } = require("./utils/respuesta");
 const transport = require("./utils/transportMail");
+const bcrypt = require('bcrypt');
 
 const getUsuarios = async () => {
   const informeRespuesta = new InformeRespuesta();
@@ -52,6 +55,8 @@ const postUsuario = async usuarioRecibido => {
   } else {
     const fecha = new Date().getTime();
     usuarioRecibido.fechaAlta = +fecha;
+    const passwordHash = bcrypt.hashSync(usuarioRecibido.contrasenya, 10);
+    usuarioRecibido.contrasenya = passwordHash;
     usuarioCreado = await Usuario.create(usuarioRecibido);
   }
   if (!informeRespuesta.error) {
@@ -59,7 +64,7 @@ const postUsuario = async usuarioRecibido => {
       from: "ciutadaverd@outlook.es",
       to: usuarioCreado.email,
       subject: "Confirmación registro en Ciutadà Verd",
-      html: (`<h1>Su registro ha sido confirmado</h1><br/><p>Muchas gracias por registrarte con nosotros, ${usuarioCreado.nombre}. Hoy eres un ciudadano más comprometido con el ambiente y con la ciudad.</p><br/><p style="color:#5d9b9b">Para seguir navegando en nuestra web presiona <strong style="text-decoration-line:underline">aquí</strong></p>`)
+      html: (`<h1>Su registro ha sido confirmado</h1><br/><p>Muchas gracias por registrarte con nosotros, ${usuarioCreado.nombre}. Para confirmar tu registro por favor haz click <strong style="color:#5d9b9b text-decoration-line:underline">aquí</strong>. <br/> Hoy eres un ciudadano más comprometido con el ambiente y con la ciudad.</p>`)
     };
     transport.sendMail(mensaje);
     informeRespuesta.jsonResponse = estructuraJsonResponse({ usuario: usuarioCreado });
@@ -104,11 +109,38 @@ const borrarUsuario = async idUsuario => {
   }
   return informeRespuesta;
 };
+
+const loginUsuario = async (email, password) => {
+  const usuarioEncontrado = await Usuario.findOne({
+    email
+  });
+  const respuesta = {
+    error: null,
+    usuario: null
+  };
+  console.log(password, usuarioEncontrado.contrasenya)
+  const verificaPass = await bcrypt.compare(password, usuarioEncontrado.contrasenya);
+
+  if (usuarioEncontrado && verificaPass === true) {
+    const token = jwt.sign({
+      id: usuarioEncontrado._id,
+      nombre: usuarioEncontrado.nombre,
+    }, process.env.JWT_SECRET, {
+      expiresIn: "10d"
+    });
+    respuesta.usuario = token;
+  } else {
+    respuesta.error = generaError("Credenciales erróneas", 403);
+
+  }
+  return respuesta;
+};
 module.exports = {
   getUsuarios,
   getUsuario,
   getUsuarioEmail,
   postUsuario,
   putUsuario,
-  borrarUsuario
+  borrarUsuario,
+  loginUsuario
 };
