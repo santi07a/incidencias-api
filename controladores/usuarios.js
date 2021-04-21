@@ -5,7 +5,8 @@ const transport = require("./utils/transportMail");
 
 const getUsuarios = async () => {
   const informeRespuesta = new InformeRespuesta();
-  const usuarios = await Usuario.find();
+  const usuarios = await Usuario.find()
+    .populate("incidenciasSeguidas");
   /* .populate({ path: "incidenciasSeguidas", model: "Incidencia", select: "nombre descripcion" }); */
   /* .populate("incidenciasSeguidas.incidencia", "nombre descripcion"); */
   /* const usuarios = await Usuario.find()
@@ -20,6 +21,17 @@ const getUsuarios = async () => {
 const getUsuario = async idUsuario => {
   const informeRespuesta = new InformeRespuesta();
   const usuario = await Usuario.findById(idUsuario);
+  if (usuario) {
+    informeRespuesta.jsonResponse = estructuraJsonResponse({ usuario });
+  } else {
+    informeRespuesta.error = generaError("El usuario solicitado no existe", 404);
+  }
+  return informeRespuesta;
+};
+
+const getUsuarioEmail = async emailUsuario => {
+  const informeRespuesta = new InformeRespuesta();
+  const usuario = await Usuario.findOne({ email: emailUsuario });
   if (usuario) {
     informeRespuesta.jsonResponse = estructuraJsonResponse({ usuario });
   } else {
@@ -95,6 +107,7 @@ const borrarUsuario = async idUsuario => {
 module.exports = {
   getUsuarios,
   getUsuario,
+  getUsuarioEmail,
   postUsuario,
   putUsuario,
   borrarUsuario
