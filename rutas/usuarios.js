@@ -19,24 +19,29 @@ router.get("/",
       return res.json(informeRespuesta.jsonResponse);
     }
   });
-router.get("/:idUsuario", async (req, res, next) => {
-  const informeRespuesta = await getUsuario(req.params.idUsuario);
-  if (informeRespuesta.error) {
-    return next(informeRespuesta.error);
-  } else {
-    return res.json(informeRespuesta.jsonResponse);
-  }
-});
-router.post("/login", async (req, res, next) => {
-  const { email, contrasenya } = req.body;
-  const { error, usuario } = await loginUsuario(email, contrasenya);
-  if (error) {
-    next(error);
-  } else {
-    res.json({ token: usuario });
-  }
-});
+router.get("/:idUsuario",
+  authUsuario,
+  async (req, res, next) => {
+    const informeRespuesta = await getUsuario(req.params.idUsuario);
+    if (informeRespuesta.error) {
+      return next(informeRespuesta.error);
+    } else {
+      return res.json(informeRespuesta.jsonResponse);
+    }
+  });
+router.post("/login",
+  authUsuario,
+  async (req, res, next) => {
+    const { email, contrasenya } = req.body;
+    const { error, usuario } = await loginUsuario(email, contrasenya);
+    if (error) {
+      next(error);
+    } else {
+      res.json({ token: usuario });
+    }
+  });
 router.post("/",
+  authUsuario,
   checkSchema(getUsuarioSchemaCompleto),
   async (req, res, next) => {
     const error = badRequestError(req);
@@ -51,6 +56,7 @@ router.post("/",
     }
   });
 router.put("/:idUsuario",
+  authUsuario,
   checkSchema(getUsuarioSchemaCompleto),
   async (req, res, next) => {
     const error = badRequestError(req);
@@ -65,6 +71,7 @@ router.put("/:idUsuario",
     }
   });
 router.delete("/:idUsuario",
+  authUsuario,
   async (req, res, next) => {
     const informeRespuesta = await borrarUsuario(req.params.idUsuario);
     if (informeRespuesta.error) {
