@@ -2,7 +2,7 @@ const express = require("express");
 const { checkSchema } = require("express-validator");
 const debug = require("debug")("incidencias:usuarios");
 const {
-  getUsuarios, getUsuario, postUsuario, putUsuario, borrarUsuario, loginUsuario
+  getUsuarios, getUsuario, getUsuarioEmail, postUsuario, putUsuario, borrarUsuario, loginUsuario
 } = require("../controladores/usuarios");
 const { badRequestError } = require("../errores/errores");
 const authUsuario = require("../middlewares/authUsuario");
@@ -40,6 +40,14 @@ router.post("/login",
       res.json({ token: usuario });
     }
   });
+/* router.get("/:idUsuario", async (req, res, next) => {
+  const informeRespuesta = await getUsuarioEmail(req.params.idUsuario);
+  if (informeRespuesta.error) {
+    return next(informeRespuesta.error);
+  } else {
+    return res.json(informeRespuesta.jsonResponse);
+  }
+}); */
 router.post("/",
   checkSchema(getUsuarioSchemaCompleto),
   async (req, res, next) => {
