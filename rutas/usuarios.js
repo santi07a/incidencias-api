@@ -5,18 +5,20 @@ const {
   getUsuarios, getUsuario, postUsuario, putUsuario, borrarUsuario, loginUsuario
 } = require("../controladores/usuarios");
 const { badRequestError } = require("../errores/errores");
+const authUsuario = require("../middlewares/authUsuario");
 const { getUsuarioSchemaCompleto, getUsuarioSchemaParcial } = require("../schemas/usuarioSchema");
 
 const router = express.Router();
 
-router.get("/", async (req, res, next) => {
-  const informeRespuesta = await getUsuarios(req.query);
-  if (informeRespuesta.error) {
-    return next(informeRespuesta.error);
-  } else {
-    return res.json(informeRespuesta.jsonResponse);
-  }
-});
+router.get("/",
+  async (req, res, next) => {
+    const informeRespuesta = await getUsuarios(req.query);
+    if (informeRespuesta.error) {
+      return next(informeRespuesta.error);
+    } else {
+      return res.json(informeRespuesta.jsonResponse);
+    }
+  });
 router.get("/:idUsuario", async (req, res, next) => {
   const informeRespuesta = await getUsuario(req.params.idUsuario);
   if (informeRespuesta.error) {
