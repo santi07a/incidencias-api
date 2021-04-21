@@ -5,7 +5,6 @@ const { generaError } = require("../errores/errores");
 const { InformeRespuesta, estructuraJsonResponse } = require("./utils/respuesta");
 const transport = require("./utils/transportMail");
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
 
 const getUsuarios = async () => {
   const informeRespuesta = new InformeRespuesta();
@@ -44,9 +43,8 @@ const postUsuario = async usuarioRecibido => {
   } else {
     const fecha = new Date().getTime();
     usuarioRecibido.fechaAlta = +fecha;
-    passNueva = bcrypt.hash(usuarioRecibido.contrasenya, saltRounds, function (err, hash) {
-      console.log(hash)
-    });
+    const passwordHash = bcrypt.hashSync(usuarioRecibido.contrasenya, 10);
+    usuarioRecibido.contrasenya = passwordHash;
     usuarioCreado = await Usuario.create(usuarioRecibido);
   }
   if (!informeRespuesta.error) {
@@ -102,24 +100,26 @@ const borrarUsuario = async idUsuario => {
 
 const loginUsuario = async (email, password) => {
   const usuarioEncontrado = await Usuario.findOne({
-    email,
-    password
+    email
   });
   const respuesta = {
     error: null,
     usuario: null
   };
-  if (!usuarioEncontrado) {
-    respuesta.error = generaError("Credenciales erróneas", 403);
-  } else {
+  console.log(password, usuarioEncontrado.contrasenya)
+  const verificaPass = await bcrypt.compare(password, usuarioEncontrado.contrasenya);
+
+  if (usuarioEncontrado && verificaPass === true) {
     const token = jwt.sign({
       id: usuarioEncontrado._id,
       nombre: usuarioEncontrado.nombre,
-      rol: usuarioEncontrado.rol
     }, process.env.JWT_SECRET, {
       expiresIn: "10d"
     });
     respuesta.usuario = token;
+  } else {
+    respuesta.error = generaError("Credenciales erróneas", 403);
+
   }
   return respuesta;
 };

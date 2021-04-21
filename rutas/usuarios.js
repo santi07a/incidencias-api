@@ -2,7 +2,7 @@ const express = require("express");
 const { checkSchema } = require("express-validator");
 const debug = require("debug")("incidencias:usuarios");
 const {
-  getUsuarios, getUsuario, postUsuario, putUsuario, borrarUsuario
+  getUsuarios, getUsuario, postUsuario, putUsuario, borrarUsuario, loginUsuario
 } = require("../controladores/usuarios");
 const { badRequestError } = require("../errores/errores");
 const { getUsuarioSchemaCompleto, getUsuarioSchemaParcial } = require("../schemas/usuarioSchema");
@@ -26,8 +26,8 @@ router.get("/:idUsuario", async (req, res, next) => {
   }
 });
 router.post("/login", async (req, res, next) => {
-  const { email, password } = req.body;
-  const { error, usuario } = await loginUsuario(email, password);
+  const { email, contrasenya } = req.body;
+  const { error, usuario } = await loginUsuario(email, contrasenya);
   if (error) {
     next(error);
   } else {
