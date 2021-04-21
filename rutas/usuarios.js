@@ -11,7 +11,6 @@ const { getUsuarioSchemaCompleto, getUsuarioSchemaParcial } = require("../schema
 const router = express.Router();
 
 router.get("/",
-  authUsuario,
   async (req, res, next) => {
     const informeRespuesta = await getUsuarios(req.query);
     if (informeRespuesta.error) {
