@@ -100,11 +100,32 @@ const borrarIncidencia = async idIncidencia => {
   }
   return informeRespuesta;
 };
+const votaIncidencia = async (idIncidencia) => {
+  const informeRespuesta = new InformeRespuesta();
+  let incidenciaCoincidente;
+  try {
+    incidenciaCoincidente = await Incidencia.findById(idIncidencia);
+  } catch (err) {
+    if (err.message === `Cast to ObjectId failed for value "${err.value}" at path "_id" for model "Incidencia"`) {
+      informeRespuesta.error = generaError("La id introducida no corresponde a ninguna incidencia", 400);
+    }
+  }
+  if (incidenciaCoincidente && !informeRespuesta.error) {
+    await incidenciaCoincidente.updateOne({ votos: incidenciaCoincidente.votos + 1 });
+    informeRespuesta.jsonResponse = estructuraJsonResponse({
+      incidencia: { ...incidenciaCoincidente._doc, votos: incidenciaCoincidente.votos + 1 }
+    });
+  } else if (!informeRespuesta.error) {
+    informeRespuesta.error = generaError("La id introducida no corresponde a ninguna incidencia", 400);
+  }
+  return informeRespuesta;
+};
 
 module.exports = {
   getIncidencias,
   getIncidencia,
   postIncidencia,
   putIncidencia,
-  borrarIncidencia
+  borrarIncidencia,
+  votaIncidencia
 };

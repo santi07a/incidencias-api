@@ -45,8 +45,7 @@ router.post("/",
     }
   });
 router.post("/login", async (req, res, next) => {
-  const { email, contrasenya } = req.body;
-  const informeRespuesta = await loginUsuario(email, contrasenya);
+  const informeRespuesta = await loginUsuario(req.body);
   if (informeRespuesta.error) {
     next(informeRespuesta.error);
   } else {
