@@ -11,6 +11,7 @@ const { getUsuarioSchemaCompleto, getUsuarioSchemaParcial } = require("../schema
 const router = express.Router();
 
 router.get("/",
+  authUsuario,
   async (req, res, next) => {
     const informeRespuesta = await getUsuarios(req.query);
     if (informeRespuesta.error) {
@@ -30,7 +31,6 @@ router.get("/:idUsuario",
     }
   });
 router.post("/",
-  authUsuario,
   checkSchema(getUsuarioSchemaCompleto),
   async (req, res, next) => {
     const error = badRequestError(req);
