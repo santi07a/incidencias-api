@@ -30,7 +30,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 router.get("/:idIncidencia",
-  authUsuario,
+  /* authUsuario */
   async (req, res, next) => {
     const informeRespuesta = await getIncidencia(req.params.idIncidencia);
     if (informeRespuesta.error) {
@@ -40,7 +40,7 @@ router.get("/:idIncidencia",
     }
   });
 router.post("/",
-  authUsuario,
+  /* authUsuario */
   multer().single("fotoIncidencia"), checkSchema(getIncidenciaSchema()),
   async (req, res, next) => {
     const error = badRequestError(req);

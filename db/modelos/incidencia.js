@@ -26,8 +26,7 @@ const IncidenciaSchema = new Schema({
     required: true
   },
   resuelta: {
-    type: Boolean,
-    required: true
+    type: Boolean
   },
   comentario: String
 });
