@@ -105,9 +105,7 @@ const loginUsuario = async (email, contrasenya) => {
   const verificaPass = await bcrypt.compare(contrasenya, usuarioEncontrado.contrasenya);
   if (usuarioEncontrado && verificaPass === true) {
     const token = jwt.sign({
-      id: usuarioEncontrado._id,
-      nombre: usuarioEncontrado.nombre,
-      email: usuarioEncontrado.email
+      id: usuarioEncontrado._id
     }, process.env.JWT_SECRET, {
       expiresIn: "10d"
     });
