@@ -3,7 +3,7 @@ const debug = require("debug")("incidencias:incidencias");
 const { checkSchema } = require("express-validator");
 const md5 = require("md5");
 const {
-  getIncidencias, getIncidencia, postIncidencia, putIncidencia, borrarIncidencia
+  getIncidencias, getIncidencia, postIncidencia, putIncidencia, borrarIncidencia, votaIncidencia
 } = require("../controladores/incidencias");
 const { getIncidenciaSchema } = require("../schemas/incidenciaSchema");
 const { generaError, badRequestError } = require("../errores/errores");
@@ -68,8 +68,6 @@ router.post("/",
       return res.status(201).json(informeRespuesta.jsonResponse);
     }
   })
-
-
 router.put("/:idIncidencia",
   authUsuario,
   checkSchema(getIncidenciaSchema(true)),
@@ -83,6 +81,16 @@ router.put("/:idIncidencia",
       return next(informeRespuesta.error);
     } else {
       return res.status(201).json(informeRespuesta.jsonResponse);
+    }
+  });
+router.patch("/votar",
+  authUsuario,
+  async (req, res, next) => {
+    const informeRespuesta = await votaIncidencia(req.body.idIncidencia);
+    if (informeRespuesta.error) {
+      next(informeRespuesta.error);
+    } else {
+      res.json(informeRespuesta.jsonResponse);
     }
   });
 router.delete("/:idIncidencia",

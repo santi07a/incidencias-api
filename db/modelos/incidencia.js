@@ -28,7 +28,12 @@ const IncidenciaSchema = new Schema({
   resuelta: {
     type: Boolean
   },
-  comentario: String
+  comentario: String,
+  votos: {
+    type: Number,
+    required: true,
+    default: 0
+  }
 });
 
 const Incidencia = model("Incidencia", IncidenciaSchema, "incidencias");
