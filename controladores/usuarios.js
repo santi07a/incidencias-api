@@ -10,13 +10,6 @@ const getUsuarios = async () => {
   const informeRespuesta = new InformeRespuesta();
   const usuarios = await Usuario.find()
     .populate("incidenciasSeguidas");
-  /* .populate({ path: "incidenciasSeguidas", model: "Incidencia", select: "nombre descripcion" }); */
-  /* .populate("incidenciasSeguidas.incidencia", "nombre descripcion"); */
-  /* const usuarios = await Usuario.find()
-    .populate("incidenciasSeguidas")
-    .then(usuario => {
-      res.json(usuario);
-    }); */
   informeRespuesta.jsonResponse = estructuraJsonResponse({ usuarios });
   return informeRespuesta;
 };
@@ -99,8 +92,9 @@ const borrarUsuario = async idUsuario => {
   return informeRespuesta;
 };
 
-const loginUsuario = async (email, contrasenya) => {
+const loginUsuario = async (datosLogin) => {
   const informeRespuesta = new InformeRespuesta();
+  const { email, contrasenya } = datosLogin;
   const usuarioEncontrado = await Usuario.findOne({ email });
   const verificaPass = await bcrypt.compare(contrasenya, usuarioEncontrado.contrasenya);
   if (usuarioEncontrado && verificaPass === true) {
@@ -116,6 +110,7 @@ const loginUsuario = async (email, contrasenya) => {
   }
   return informeRespuesta;
 };
+
 module.exports = {
   getUsuarios,
   getUsuario,
