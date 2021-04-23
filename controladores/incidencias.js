@@ -18,7 +18,7 @@ const getIncidencias = async (queries) => {
     .sort({ [tipoOrden]: direccionOrden })
     .limit(queries.nPorPagina ? +queries.nPorPagina : 0)
     .skip(queries.nPorPagina && queries.pagina ? (+queries.nPorPagina * +queries.pagina) - +queries.nPorPagina : 0)
-    .populate("usuarioCreador", "nombre apellidos email telefono -_id")
+    .populate("usuarioCreador", "nombre apellidos email telefono _id")
     .populate("tipoIncidencia", "tipo -_id");
   informeRespuesta.jsonResponse = estructuraJsonResponse({ incidencias });
   return informeRespuesta;
