@@ -11,8 +11,7 @@ const IncidenciaSchema = new Schema({
     required: true
   },
   descripcion: {
-    type: String,
-    required: true
+    type: String
   },
   fotoIncidencia: String,
   direccion: String,

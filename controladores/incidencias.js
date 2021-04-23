@@ -44,7 +44,7 @@ const getIncidencia = async idIncidencia => {
 
 const postIncidencia = async (incidenciaRecibida, nombreOriginal) => {
   const informeRespuesta = new InformeRespuesta();
-  const [tipoIncidencia] = await TipoIncidencia.find({ tipo: incidenciaRecibida.tipoIncidencia });
+  const tipoIncidencia = await TipoIncidencia.findOne({ tipo: incidenciaRecibida.tipoIncidencia });
   incidenciaRecibida.tipoIncidencia = `${tipoIncidencia._id}`;
   const fecha = new Date().getTime();
   incidenciaRecibida.registrada = +fecha;

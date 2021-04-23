@@ -40,11 +40,13 @@ router.get("/:idIncidencia",
     }
   });
 router.post("/",
-  /* authUsuario */
-  multer().single("fotoIncidencia"), checkSchema(getIncidenciaSchema()),
-  async (req, res, next) => {
+  authUsuario,
+  multer().single("fotoIncidencia"),
+  /* checkSchema(getIncidenciaSchema()),
+ */  async (req, res, next) => {
     const error = badRequestError(req);
     if (error) {
+      console.log(error)
       return next(error);
     }
     const informeRespuesta = await postIncidencia(req.body, req.file.originalname);
