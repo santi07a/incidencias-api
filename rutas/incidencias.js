@@ -30,7 +30,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 router.get("/:idIncidencia",
-  /* authUsuario */
+  authUsuario,
   async (req, res, next) => {
     const informeRespuesta = await getIncidencia(req.params.idIncidencia);
     if (informeRespuesta.error) {

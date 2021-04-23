@@ -53,7 +53,7 @@ const postIncidencia = async (incidenciaRecibida, nombreOriginal) => {
   const extension = path.extname(nombreOriginal);
   await nuevaIncidencia.updateOne({ fotoIncidencia: `incidencia${nuevaIncidencia.id}${extension}` });
   const incidenciaPosteada = await Incidencia.findById(nuevaIncidencia.id)
-    .populate("usuarioCreador", "nombre apellidos email telefono -_id")
+    .populate("usuarioCreador", "email _id")
     .populate("tipoIncidencia", "tipo -_id");
   informeRespuesta.jsonResponse = estructuraJsonResponse({ incidencia: incidenciaPosteada });
   return informeRespuesta;
