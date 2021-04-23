@@ -22,7 +22,7 @@ const UsuarioSchema = new Schema({
   fechaAlta: {
     type: Number
   },
-  incidenciasSeguidas: [{
+  incidenciasVotadas: [{
     type: Schema.Types.ObjectId,
     ref: "Incidencia"
   }]
