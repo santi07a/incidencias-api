@@ -23,6 +23,7 @@ const notFoundError = (req, res, next) => {
 const badRequestError = req => {
   const errores = validationResult(req);
   let error;
+  console.log(errores)
   if (!errores.isEmpty()) {
     error = generaError("El objeto introducido no tiene la forma correcta", 400);
   }
