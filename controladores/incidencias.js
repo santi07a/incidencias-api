@@ -18,12 +18,11 @@ const getIncidencias = async (queries) => {
     .sort({ [tipoOrden]: direccionOrden })
     .limit(queries.nPorPagina ? +queries.nPorPagina : 0)
     .skip(queries.nPorPagina && queries.pagina ? (+queries.nPorPagina * +queries.pagina) - +queries.nPorPagina : 0)
-    .populate("usuarioCreador", "nombre apellidos email telefono -_id")
+    .populate("usuarioCreador", "nombre apellidos email telefono _id")
     .populate("tipoIncidencia", "tipo -_id");
   informeRespuesta.jsonResponse = estructuraJsonResponse({ incidencias });
   return informeRespuesta;
 };
-
 const getIncidencia = async idIncidencia => {
   const informeRespuesta = new InformeRespuesta();
   let incidencia;
@@ -45,7 +44,7 @@ const getIncidencia = async idIncidencia => {
 
 const postIncidencia = async (incidenciaRecibida, nombreOriginal, idUsuario) => {
   const informeRespuesta = new InformeRespuesta();
-  const [tipoIncidencia] = await TipoIncidencia.find({ tipo: incidenciaRecibida.tipoIncidencia });
+  const tipoIncidencia = await TipoIncidencia.findOne({ tipo: incidenciaRecibida.tipoIncidencia });
   incidenciaRecibida.tipoIncidencia = `${tipoIncidencia._id}`;
   const fecha = new Date().getTime();
   incidenciaRecibida.registrada = +fecha;
@@ -54,7 +53,7 @@ const postIncidencia = async (incidenciaRecibida, nombreOriginal, idUsuario) => 
   const extension = path.extname(nombreOriginal);
   await nuevaIncidencia.updateOne({ fotoIncidencia: `incidencia${nuevaIncidencia.id}${extension}` });
   const incidenciaPosteada = await Incidencia.findById(nuevaIncidencia.id)
-    .populate("usuarioCreador", "nombre apellidos email telefono -_id")
+    .populate("usuarioCreador", "email _id")
     .populate("tipoIncidencia", "tipo -_id");
   informeRespuesta.jsonResponse = estructuraJsonResponse({ incidencia: incidenciaPosteada });
   return informeRespuesta;

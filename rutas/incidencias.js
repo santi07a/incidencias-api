@@ -30,7 +30,6 @@ router.get("/", async (req, res, next) => {
   }
 });
 router.get("/:idIncidencia",
-  authUsuario,
   async (req, res, next) => {
     const informeRespuesta = await getIncidencia(req.params.idIncidencia);
     if (informeRespuesta.error) {
@@ -46,6 +45,7 @@ router.post("/",
   async (req, res, next) => {
     const error = badRequestError(req);
     if (error) {
+      console.log(error)
       return next(error);
     }
     const informeRespuesta = await postIncidencia(req.body, req.file.originalname, req.idUsuario);
