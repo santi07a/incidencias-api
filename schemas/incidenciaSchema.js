@@ -51,6 +51,7 @@ const getIncidenciaSchema = (requiereId) => {
     }
   };
   const latitud = {
+    optional: true,
     custom: {
       errorMessage: "Se tiene que incluir la dirección de la incidencia o las coordenadas\
        (latitud y longitud)",
@@ -71,6 +72,7 @@ const getIncidenciaSchema = (requiereId) => {
     }
   };
   const longitud = {
+    optional: true,
     custom: {
       errorMessage: "Se tiene que incluir la dirección de la incidencia o las coordenadas\
        (latitud y longitud)",
