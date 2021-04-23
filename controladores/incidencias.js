@@ -114,8 +114,10 @@ const votaIncidencia = async (idUsuario, idIncidencia, sumaVoto) => {
   }
   if (incidenciaCoincidente && !informeRespuesta.error) {
     await incidenciaCoincidente.updateOne({ votos: sumaVoto ? incidenciaCoincidente.votos + 1 : incidenciaCoincidente.votos - 1 });
-    usuarioCoincidente.incidenciasSeguidas.push(idIncidencia);
-    await usuarioCoincidente.updateOne({ incidenciasSeguidas: usuarioCoincidente.incidenciasSeguidas });
+    if (!usuarioCoincidente.incidenciasVotadas.includes(idIncidencia)) {
+      usuarioCoincidente.incidenciasVotadas.push(idIncidencia);
+    }
+    await usuarioCoincidente.updateOne({ incidenciasVotadas: usuarioCoincidente.incidenciasVotadas });
     informeRespuesta.jsonResponse = estructuraJsonResponse({
       incidencia: { ...incidenciaCoincidente._doc, votos: sumaVoto ? incidenciaCoincidente.votos + 1 : incidenciaCoincidente.votos - 1 }
     });
