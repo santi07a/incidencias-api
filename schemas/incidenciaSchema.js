@@ -41,9 +41,9 @@ const getIncidenciaSchema = (requiereId) => {
     errorMessage: "Falta la foto de la incidencia"
   };
   const descripcion = {
-    exists: {
-      errorMessage: "Falta la descripción de la incidencia"
-    }
+    optional: true,
+    errorMessage: "Falta la descripción de la incidencia"
+
   };
   const direccion = {
     custom: {

@@ -11,8 +11,7 @@ const IncidenciaSchema = new Schema({
     required: true
   },
   descripcion: {
-    type: String,
-    required: true
+    type: String
   },
   fotoIncidencia: String,
   direccion: String,
@@ -26,8 +25,7 @@ const IncidenciaSchema = new Schema({
     required: true
   },
   resuelta: {
-    type: Boolean,
-    required: true
+    type: Boolean
   },
   comentario: String,
   votos: {
