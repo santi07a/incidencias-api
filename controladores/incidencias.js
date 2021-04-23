@@ -23,7 +23,6 @@ const getIncidencias = async (queries) => {
   informeRespuesta.jsonResponse = estructuraJsonResponse({ incidencias });
   return informeRespuesta;
 };
-
 const getIncidencia = async idIncidencia => {
   const informeRespuesta = new InformeRespuesta();
   let incidencia;
