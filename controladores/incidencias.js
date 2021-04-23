@@ -101,7 +101,7 @@ const borrarIncidencia = async idIncidencia => {
   }
   return informeRespuesta;
 };
-const votaIncidencia = async (idUsuario, idIncidencia) => {
+const votaIncidencia = async (idUsuario, idIncidencia, sumaVoto) => {
   const informeRespuesta = new InformeRespuesta();
   const usuarioCoincidente = await Usuario.findById(idUsuario);
   let incidenciaCoincidente;
@@ -113,11 +113,11 @@ const votaIncidencia = async (idUsuario, idIncidencia) => {
     }
   }
   if (incidenciaCoincidente && !informeRespuesta.error) {
-    await incidenciaCoincidente.updateOne({ votos: incidenciaCoincidente.votos + 1 });
+    await incidenciaCoincidente.updateOne({ votos: sumaVoto ? incidenciaCoincidente.votos + 1 : incidenciaCoincidente.votos - 1 });
     usuarioCoincidente.incidenciasSeguidas.push(idIncidencia);
     await usuarioCoincidente.updateOne({ incidenciasSeguidas: usuarioCoincidente.incidenciasSeguidas });
     informeRespuesta.jsonResponse = estructuraJsonResponse({
-      incidencia: { ...incidenciaCoincidente._doc, votos: incidenciaCoincidente.votos + 1 }
+      incidencia: { ...incidenciaCoincidente._doc, votos: sumaVoto ? incidenciaCoincidente.votos + 1 : incidenciaCoincidente.votos - 1 }
     });
   } else if (!informeRespuesta.error) {
     informeRespuesta.error = generaError("La id introducida no corresponde a ninguna incidencia", 400);
