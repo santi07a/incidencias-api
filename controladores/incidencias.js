@@ -1,4 +1,5 @@
 const Incidencia = require("../db/modelos/incidencia");
+const Usuario = require("../db/modelos/usuario");
 const TipoIncidencia = require("../db/modelos/tipoIncidencia");
 const { generaError } = require("../errores/errores");
 const { InformeRespuesta, estructuraJsonResponse } = require("./utils/respuesta");
@@ -100,8 +101,9 @@ const borrarIncidencia = async idIncidencia => {
   }
   return informeRespuesta;
 };
-const votaIncidencia = async (idIncidencia) => {
+const votaIncidencia = async (idUsuario, idIncidencia) => {
   const informeRespuesta = new InformeRespuesta();
+  const usuarioCoincidente = await Usuario.findById(idUsuario);
   let incidenciaCoincidente;
   try {
     incidenciaCoincidente = await Incidencia.findById(idIncidencia);
@@ -112,6 +114,8 @@ const votaIncidencia = async (idIncidencia) => {
   }
   if (incidenciaCoincidente && !informeRespuesta.error) {
     await incidenciaCoincidente.updateOne({ votos: incidenciaCoincidente.votos + 1 });
+    usuarioCoincidente.incidenciasSeguidas.push(idIncidencia);
+    await usuarioCoincidente.updateOne({ incidenciasSeguidas: usuarioCoincidente.incidenciasSeguidas });
     informeRespuesta.jsonResponse = estructuraJsonResponse({
       incidencia: { ...incidenciaCoincidente._doc, votos: incidenciaCoincidente.votos + 1 }
     });

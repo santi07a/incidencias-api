@@ -86,7 +86,7 @@ router.put("/:idIncidencia",
 router.patch("/votar",
   authUsuario,
   async (req, res, next) => {
-    const informeRespuesta = await votaIncidencia(req.body.idIncidencia);
+    const informeRespuesta = await votaIncidencia(req.idUsuario, req.body.idIncidencia);
     if (informeRespuesta.error) {
       next(informeRespuesta.error);
     } else {
