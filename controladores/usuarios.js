@@ -9,14 +9,15 @@ const bcrypt = require('bcrypt');
 const getUsuarios = async () => {
   const informeRespuesta = new InformeRespuesta();
   const usuarios = await Usuario.find()
-    .populate("incidenciasSeguidas");
+    .populate("incidenciasVotadas");
   informeRespuesta.jsonResponse = estructuraJsonResponse({ usuarios });
   return informeRespuesta;
 };
 
 const getUsuario = async idUsuario => {
   const informeRespuesta = new InformeRespuesta();
-  const usuario = await Usuario.findById(idUsuario);
+  const usuario = await Usuario.findById(idUsuario)
+    .populate("incidenciasVotadas");
   if (usuario) {
     informeRespuesta.jsonResponse = estructuraJsonResponse({ usuario });
   } else {
