@@ -42,12 +42,13 @@ const getIncidencia = async idIncidencia => {
   } return informeRespuesta;
 };
 
-const postIncidencia = async (incidenciaRecibida, nombreOriginal) => {
+const postIncidencia = async (incidenciaRecibida, nombreOriginal, idUsuario) => {
   const informeRespuesta = new InformeRespuesta();
   const tipoIncidencia = await TipoIncidencia.findOne({ tipo: incidenciaRecibida.tipoIncidencia });
   incidenciaRecibida.tipoIncidencia = `${tipoIncidencia._id}`;
   const fecha = new Date().getTime();
   incidenciaRecibida.registrada = +fecha;
+  incidenciaRecibida.usuarioCreador = idUsuario;
   const nuevaIncidencia = await Incidencia.create(incidenciaRecibida);
   const extension = path.extname(nombreOriginal);
   await nuevaIncidencia.updateOne({ fotoIncidencia: `incidencia${nuevaIncidencia.id}${extension}` });

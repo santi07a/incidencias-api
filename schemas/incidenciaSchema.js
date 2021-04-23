@@ -29,14 +29,6 @@ const getIncidenciaSchema = (requiereId) => {
       }
     }
   };
-  const usuarioCreador = {
-    exists: {
-      errorMessage: "Falta el idObject del usuario que creó la incidencia"
-    },
-    isMongoId: {
-      errorMessage: "El usuario creador tiene que ser un ObjectId de Mongo"
-    }
-  };
   const fotoIncidencia = {
     errorMessage: "Falta la foto de la incidencia"
   };
@@ -125,7 +117,6 @@ const getIncidenciaSchema = (requiereId) => {
   };
   return {
     nombre,
-    usuarioCreador,
     fotoIncidencia,
     descripcion,
     direccion,

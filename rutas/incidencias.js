@@ -41,14 +41,14 @@ router.get("/:idIncidencia",
 router.post("/",
   authUsuario,
   multer().single("fotoIncidencia"),
-  /* checkSchema(getIncidenciaSchema()),
- */  async (req, res, next) => {
+  checkSchema(getIncidenciaSchema()),
+  async (req, res, next) => {
     const error = badRequestError(req);
     if (error) {
       console.log(error)
       return next(error);
     }
-    const informeRespuesta = await postIncidencia(req.body, req.file.originalname);
+    const informeRespuesta = await postIncidencia(req.body, req.file.originalname, req.idUsuario);
     const datos = bucket.file(informeRespuesta.jsonResponse.body.incidencia.fotoIncidencia);
     const existe = await datos.exists();
     const ficheroFB = datos.createWriteStream({ resumable: false });
