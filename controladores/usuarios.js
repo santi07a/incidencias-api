@@ -46,7 +46,7 @@ const postUsuario = async usuarioRecibido => {
     const mensaje = {
       from: "puntociudadano@info.com",
       to: usuarioCreado.email,
-      subject: "Confirmación registro en Ciutadà Verd",
+      subject: "Confirmación registro en Punto Ciudadano",
       html: (`<h1>Su registro ha sido confirmado</h1><br/><p>Muchas gracias por registrarte con nosotros, ${usuarioCreado.nombre}. Para confirmar tu registro por favor haz click <strong style="color:#5d9b9b"><a href=http://ciutadaverd.netlify.app>Aquí</strong>.<br/> <br/> Hoy eres un ciudadano más comprometido con el ambiente y con la ciudad.</p>`)
     };
     transport.sendMail(mensaje);
