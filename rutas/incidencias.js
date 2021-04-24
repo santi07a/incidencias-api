@@ -99,6 +99,7 @@ router.delete("/:idIncidencia",
   async (req, res, next) => {
     const informeRespuesta = await borrarIncidencia(req.params.idIncidencia);
     if (informeRespuesta.error) {
+      console.log(informeRespuesta.error)
       return next(informeRespuesta.error);
     }
     return res.json(informeRespuesta.jsonResponse);
