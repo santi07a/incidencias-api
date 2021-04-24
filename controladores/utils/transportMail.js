@@ -1,11 +1,11 @@
 const nodemailer = require("nodemailer");
 
 const transport = nodemailer.createTransport({
-  host: "smtp.mail.yahoo.com",
-  port: 465,
+  host: "smtp.mailtrap.io",
+  port: 587,
   auth: {
-    user: "puntociudadano@yahoo.com",
-    pass: "Somdevbmns202!"
+    user: "b84164b1aff146",
+    pass: "1d83a8122c42cf"
   }
 });
 
