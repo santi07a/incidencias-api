@@ -1,11 +1,11 @@
 const nodemailer = require("nodemailer");
 
 const transport = nodemailer.createTransport({
-  host: "smtp-mail.outlook.com",
-  port: 587,
+  host: "smtp.mail.yahoo.com",
+  port: 465,
   auth: {
-    user: "ciutadaverd@outlook.es",
-    pass: "somdevbmns202!"
+    user: "puntociudadano@yahoo.com",
+    pass: "Somdevbmns202!"
   }
 });
 
