@@ -101,7 +101,7 @@ const borrarIncidencia = async idIncidencia => {
   }
   return informeRespuesta;
 };
-const votaIncidencia = async (idUsuario, idIncidencia, sumaVoto) => {
+const votaIncidencia = async (idUsuario, idIncidencia) => {
   const informeRespuesta = new InformeRespuesta();
   const usuarioCoincidente = await Usuario.findById(idUsuario);
   let incidenciaCoincidente;
