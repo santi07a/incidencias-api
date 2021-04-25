@@ -113,13 +113,18 @@ const votaIncidencia = async (idUsuario, idIncidencia, sumaVoto) => {
     }
   }
   if (incidenciaCoincidente && !informeRespuesta.error) {
-    await incidenciaCoincidente.updateOne({ votos: sumaVoto ? incidenciaCoincidente.votos + 1 : incidenciaCoincidente.votos - 1 });
-    if (!usuarioCoincidente.incidenciasVotadas.includes(idIncidencia)) {
+    const index = usuarioCoincidente.incidenciasVotadas.indexOf(idIncidencia);
+    if (index > -1) {
+      usuarioCoincidente.incidenciasVotadas.splice(index, 1);
+      await incidenciaCoincidente.updateOne({ votos: incidenciaCoincidente.votos - 1 });
+    } else {
       usuarioCoincidente.incidenciasVotadas.push(idIncidencia);
+      await incidenciaCoincidente.updateOne({ votos: incidenciaCoincidente.votos + 1 });
     }
+    console.log(usuarioCoincidente.incidenciasVotadas);
     await usuarioCoincidente.updateOne({ incidenciasVotadas: usuarioCoincidente.incidenciasVotadas });
     informeRespuesta.jsonResponse = estructuraJsonResponse({
-      incidencia: { ...incidenciaCoincidente._doc, votos: sumaVoto ? incidenciaCoincidente.votos + 1 : incidenciaCoincidente.votos - 1 }
+      incidencia: { ...incidenciaCoincidente._doc, votos: !(index > -1) ? incidenciaCoincidente.votos + 1 : incidenciaCoincidente.votos - 1 }
     });
   } else if (!informeRespuesta.error) {
     informeRespuesta.error = generaError("La id introducida no corresponde a ninguna incidencia", 400);
