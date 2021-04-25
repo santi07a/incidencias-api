@@ -13,14 +13,16 @@ const getIncidencias = async (queries) => {
   }
   const informeRespuesta = new InformeRespuesta();
   /* const direccionOrden = queries.orden === "DESC" ? -1 : 1; */
-  const tipoOrden = queries.ordenPor === "fecha" ? "registrada" : "votos";
+  const tipoOrden = queries.ordenPor ? (queries.ordenPor === "fecha" ? "registrada" : "votos") : "registrada";
   console.log(tipoOrden);
   const incidencias = await Incidencia.find(condicion)
     .limit(queries.nPorPagina ? +queries.nPorPagina : 0)
     .skip(queries.nPorPagina && queries.pagina ? (+queries.nPorPagina * +queries.pagina) - +queries.nPorPagina : 0)
     .populate("usuarioCreador", "nombre apellidos email telefono _id")
     .populate("tipoIncidencia", "tipo -_id");
-  incidencias.sort((a, b) => b[tipoOrden] - a[tipoOrden]);
+  if (tipoOrden) {
+    incidencias.sort((a, b) => b[tipoOrden] - a[tipoOrden]);
+  }
   informeRespuesta.jsonResponse = estructuraJsonResponse({ incidencias });
   return informeRespuesta;
 };
