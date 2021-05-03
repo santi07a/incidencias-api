@@ -51,7 +51,8 @@ const getIncidenciasSimilares = async (coordenadas) => {
   if (!coordenadas.latitud || !coordenadas.longitud) {
     informeRespuesta.error = generaError("Tienes que introducir unas coordenadas con latitud y longitud", 400);
   } else {
-    const incidencias = await Incidencia.find();
+    const incidencias = await Incidencia.find()
+      .populate("tipoIncidencia", "tipo -_id");;
     const distanciaEnMetros = 2; // realmente no son metros, un 2 corresponde a unos 10 bloques del eixample
     const distancia = distanciaEnMetros * 90 / 10000;
     const incidenciasSimilares = incidencias
