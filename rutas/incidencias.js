@@ -29,15 +29,6 @@ router.get("/", async (req, res, next) => {
     return res.json(informeRespuesta.jsonResponse);
   }
 });
-router.get("/similares", async (req, res, next) => {
-  /* se le tendrá que pasar las coordenadas por el body */
-  const informeRespuesta = await getIncidenciasSimilares(req.body.coordenadas);
-  if (informeRespuesta.error) {
-    return next(informeRespuesta.error);
-  } else {
-    return res.json(informeRespuesta.jsonResponse);
-  }
-});
 router.get("/:idIncidencia",
   async (req, res, next) => {
     const informeRespuesta = await getIncidencia(req.params.idIncidencia);
@@ -78,6 +69,14 @@ router.post("/",
       return res.status(201).json(informeRespuesta.jsonResponse);
     }
   })
+router.post("/similares", async (req, res, next) => {
+  const informeRespuesta = await getIncidenciasSimilares(req.body.coordenadas);
+  if (informeRespuesta.error) {
+    return next(informeRespuesta.error);
+  } else {
+    return res.json(informeRespuesta.jsonResponse);
+  }
+});
 router.put("/:idIncidencia",
   authUsuario,
   checkSchema(getIncidenciaSchema(true)),
