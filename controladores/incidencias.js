@@ -26,6 +26,7 @@ const getIncidencias = async (queries) => {
   informeRespuesta.jsonResponse = estructuraJsonResponse({ incidencias });
   return informeRespuesta;
 };
+
 const getIncidencia = async idIncidencia => {
   const informeRespuesta = new InformeRespuesta();
   let incidencia;
@@ -43,6 +44,27 @@ const getIncidencia = async idIncidencia => {
   } else if (!informeRespuesta.error) {
     informeRespuesta.error = generaError("La incidencia solicitada no existe", 404);
   } return informeRespuesta;
+};
+
+const getIncidenciasSimilares = async (coordenadas) => {
+  const informeRespuesta = new InformeRespuesta();
+  if (!coordenadas.latitud || !coordenadas.longitud) {
+    informeRespuesta.error = generaError("Tienes que introducir unas coordenadas con latitud y longitud", 400);
+  } else {
+    const incidencias = await Incidencia.find();
+    const distanciaEnMetros = 2; // realmente no son metros, un 2 corresponde a unos 10 bloques del eixample
+    const distancia = distanciaEnMetros * 90 / 10000;
+    const incidenciasSimilares = incidencias
+      .map(incidencia => ({
+        ...incidencia._doc,
+        cuadradoDistancia: (incidencia.latitud - coordenadas.latitud) ** 2 + (incidencia.longitud - coordenadas.longitud) ** 2
+      }))
+      .filter(incidencia => incidencia.cuadradoDistancia < distancia ** 2)
+      .sort((i1, i2) => i1.cuadradoDistancia - i2.cuadradoDistancia)
+      .slice(0, 5);
+    informeRespuesta.jsonResponse = estructuraJsonResponse({ incidencias: incidenciasSimilares });
+  }
+  return informeRespuesta;
 };
 
 const postIncidencia = async (incidenciaRecibida, nombreOriginal, idUsuario) => {
@@ -138,6 +160,7 @@ const votaIncidencia = async (idUsuario, idIncidencia) => {
 module.exports = {
   getIncidencias,
   getIncidencia,
+  getIncidenciasSimilares,
   postIncidencia,
   putIncidencia,
   borrarIncidencia,

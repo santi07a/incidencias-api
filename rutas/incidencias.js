@@ -3,7 +3,7 @@ const debug = require("debug")("incidencias:incidencias");
 const { checkSchema } = require("express-validator");
 const md5 = require("md5");
 const {
-  getIncidencias, getIncidencia, postIncidencia, putIncidencia, borrarIncidencia, votaIncidencia
+  getIncidencias, getIncidencia, getIncidenciasSimilares, postIncidencia, putIncidencia, borrarIncidencia, votaIncidencia
 } = require("../controladores/incidencias");
 const { getIncidenciaSchema } = require("../schemas/incidenciaSchema");
 const { generaError, badRequestError } = require("../errores/errores");
@@ -23,6 +23,15 @@ const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   const informeRespuesta = await getIncidencias(req.query);
+  if (informeRespuesta.error) {
+    return next(informeRespuesta.error);
+  } else {
+    return res.json(informeRespuesta.jsonResponse);
+  }
+});
+router.get("/similares", async (req, res, next) => {
+  /* se le tendrá que pasar las coordenadas por el body */
+  const informeRespuesta = await getIncidenciasSimilares(req.body.coordenadas);
   if (informeRespuesta.error) {
     return next(informeRespuesta.error);
   } else {
