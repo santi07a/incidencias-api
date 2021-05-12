@@ -6,6 +6,8 @@
 
 # https://api-incidencias.herokuapp.com
 
+# Repo frontal: https://github.com/nereadev/proyecto-final-front
+
 (GET) /incidencias/ -> listado de todas las incidencias.
 (GET) /{idIncidencia}/ -> detalle de la incidencia elegida.
 (GET) /usuarios/ -> listado de los usuarios.
